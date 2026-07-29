@@ -118,10 +118,28 @@ export function calcular(p: Premissas, c: Custos): Resultado {
 
 export type CenarioId = "conservador" | "base" | "otimista";
 
-export const CENARIOS: { id: CenarioId; nome: string }[] = [
-  { id: "conservador", nome: "Conservador" },
-  { id: "base", nome: "Base" },
-  { id: "otimista", nome: "Otimista" },
+// Cada cenario carrega uma descricao em linguagem simples do "ganho de
+// eficiencia com IA", para o lead entender qual leitura esta vendo.
+export const CENARIOS: {
+  id: CenarioId;
+  nome: string;
+  descricao: string;
+}[] = [
+  {
+    id: "conservador",
+    nome: "Conservador",
+    descricao: "A leitura mais cautelosa. Assume o menor ganho. É o padrão.",
+  },
+  {
+    id: "base",
+    nome: "Base",
+    descricao: "O ganho mais provável, no meio do caminho.",
+  },
+  {
+    id: "otimista",
+    nome: "Otimista",
+    descricao: "O melhor caso, com a operação bem ajustada à IA.",
+  },
 ];
 
 // A UI abre sempre no Conservador (Decisao 4 / criterio de aceite).
@@ -134,20 +152,24 @@ type PorCenario<T> = Record<CenarioId, T>;
    Separamos as premissas em dois grupos, para que os tres cenarios fiquem
    coerentes quando o lead edita:
 
-   - EntradasCompartilhadas: os numeros DO CLIENTE (volume, horas, custo/hora,
-     custo do erro, upside D3). Um valor so, iguais nos tres cenarios.
-   - FatoresCenario: as premissas de captura/reducao/erro e a estrutura de
-     custo, que representam o quao conservadora e a leitura. Variam por cenario.
+   - EntradasCompartilhadas: os numeros DO CLIENTE, em linguagem que um decisor
+     conhece de cabeca (pessoas, documentos/mes, tempo por documento em MINUTOS,
+     custo mensal por analista). Um valor so, iguais nos tres cenarios.
+   - FatoresCenario: o "ganho de eficiencia com IA" (reducao de tempo, captura,
+     erro) e a estrutura de custo. Variam por cenario e sao escolhidos pelo
+     seletor de cenario, nao digitados campo a campo.
 
-   Assim o lead edita "os numeros dele" uma vez e ve os tres cenarios ao vivo,
-   e o haircut (captura) do cenario exibido fica visivel e editavel (Decisao 4).
+   Os campos mais tecnicos (custo por erro, taxa de erro, haircut) ficam em
+   "Ajustes avancados" com defaults de benchmark, porque o lead nao os conhece.
+   Mesmo assim o haircut segue visivel e editavel la (Decisao 4).
 */
 
 export interface EntradasCompartilhadas {
-  docsMes: number;
-  horasPorDoc: number;
-  custoHora: number;
-  custoErro: number;
+  pessoas: number; // quantas pessoas fazem essa analise hoje
+  docsMes: number; // documentos analisados por mes
+  minutosPorDoc: number; // tempo medio por documento, em MINUTOS (evita 0,5h)
+  custoMensalAnalista: number; // custo mensal carregado por analista (R$)
+  custoErro: number; // avancado: custo medio de um erro/retrabalho (R$)
   d3Ligado: boolean;
   editaisExtraMes: number;
   taxaVitoria: number;
@@ -171,9 +193,11 @@ export interface FatoresCenario {
    Fontes comentadas por valor.
 */
 
-// custoHora: fonte PRD Secao 2.6 (custo/hora carregado de analista).
-const CUSTO_HORA_DEFAULT = 120;
-// custoErro: fonte PRD Secao 2.6 (custo medio de um erro/retrabalho).
+// Custo mensal carregado por analista. Deriva o custo/hora do PRD (120/h) sobre
+// as 160 horas uteis/mes: 120 * 160 = 19200. Pedimos o mensal porque o decisor
+// conhece o salario carregado, nao o custo/hora.
+const CUSTO_MENSAL_ANALISTA_DEFAULT = 19200;
+// custoErro: fonte PRD Secao 2.6 (custo medio de um erro/retrabalho). Avancado.
 const CUSTO_ERRO_DEFAULT = 3000;
 
 // Fatores por cenario. Conservador subestima de proposito (Decisao 4).
@@ -246,9 +270,10 @@ export const VERTICAIS: Vertical[] = [
     nome: "Jurídico / Contratos",
     resumo: "Contratos, NDAs, aditivos",
     entradas: {
+      pessoas: 4,
       docsMes: 150, // calibrado mid-market (PRD 2.6 sugeria 60)
-      horasPorDoc: 2.0, // fonte: PRD 2.6 (Base)
-      custoHora: CUSTO_HORA_DEFAULT,
+      minutosPorDoc: 120, // 2h/doc (PRD 2.6 Base), em minutos
+      custoMensalAnalista: CUSTO_MENSAL_ANALISTA_DEFAULT,
       custoErro: CUSTO_ERRO_DEFAULT,
       ...upsideDesligado,
     },
@@ -258,9 +283,10 @@ export const VERTICAIS: Vertical[] = [
     nome: "Financeiro / Crédito",
     resumo: "Alto volume, cadastros e propostas",
     entradas: {
+      pessoas: 8,
       docsMes: 500, // calibrado mid-market (PRD 2.6 sugeria 200)
-      horasPorDoc: 0.5, // fonte: PRD 2.6 (Base)
-      custoHora: CUSTO_HORA_DEFAULT,
+      minutosPorDoc: 30, // 0,5h/doc (PRD 2.6 Base), em minutos
+      custoMensalAnalista: CUSTO_MENSAL_ANALISTA_DEFAULT,
       custoErro: CUSTO_ERRO_DEFAULT,
       ...upsideDesligado,
     },
@@ -270,9 +296,10 @@ export const VERTICAIS: Vertical[] = [
     nome: "Construção / Editais e Licitações",
     resumo: "Cobertura de editais disponível como upside",
     entradas: {
+      pessoas: 3,
       docsMes: 80, // calibrado mid-market (PRD 2.6 sugeria 30)
-      horasPorDoc: 3.0, // fonte: PRD 2.6 (Base)
-      custoHora: CUSTO_HORA_DEFAULT,
+      minutosPorDoc: 180, // 3h/doc (PRD 2.6 Base), em minutos
+      custoMensalAnalista: CUSTO_MENSAL_ANALISTA_DEFAULT,
       custoErro: CUSTO_ERRO_DEFAULT,
       ...upsideDesligado,
       // D3 (cobertura) disponivel para ligar nesta vertical (Secao 2.1 / 9)
@@ -284,9 +311,10 @@ export const VERTICAIS: Vertical[] = [
     nome: "Indústria Regulada / Compliance",
     resumo: "Auditoria, circulares, políticas",
     entradas: {
+      pessoas: 5,
       docsMes: 200, // calibrado mid-market (PRD 2.6 sugeria 80)
-      horasPorDoc: 1.5, // fonte: PRD 2.6 (Base)
-      custoHora: CUSTO_HORA_DEFAULT,
+      minutosPorDoc: 90, // 1,5h/doc (PRD 2.6 Base), em minutos
+      custoMensalAnalista: CUSTO_MENSAL_ANALISTA_DEFAULT,
       custoErro: CUSTO_ERRO_DEFAULT,
       ...upsideDesligado,
     },
@@ -296,9 +324,10 @@ export const VERTICAIS: Vertical[] = [
     nome: "Genérico / Mix",
     resumo: "Fallback para operações mistas",
     entradas: {
+      pessoas: 5,
       docsMes: 200, // calibrado mid-market (PRD 2.6 sugeria 80)
-      horasPorDoc: 1.5, // fonte: PRD 2.6 (Base)
-      custoHora: CUSTO_HORA_DEFAULT,
+      minutosPorDoc: 90, // 1,5h/doc (PRD 2.6 Base), em minutos
+      custoMensalAnalista: CUSTO_MENSAL_ANALISTA_DEFAULT,
       custoErro: CUSTO_ERRO_DEFAULT,
       ...upsideDesligado,
     },
@@ -316,7 +345,8 @@ export function fatoresDoCenario(v: Vertical, cenario: CenarioId): FatoresCenari
 }
 
 // Compoe Premissas + Custos (assinatura de calcular) a partir das entradas
-// compartilhadas e dos fatores do cenario.
+// compartilhadas e dos fatores do cenario. Converte os campos humanos para as
+// unidades do motor: minutos/doc -> horas/doc, custo mensal -> custo/hora.
 export function comporPremissas(
   entradas: EntradasCompartilhadas,
   fatores: FatoresCenario
@@ -324,8 +354,8 @@ export function comporPremissas(
   return {
     premissas: {
       docsMes: entradas.docsMes,
-      horasPorDoc: entradas.horasPorDoc,
-      custoHora: entradas.custoHora,
+      horasPorDoc: entradas.minutosPorDoc / 60,
+      custoHora: entradas.custoMensalAnalista / HORAS_UTEIS_FTE_MES,
       custoErro: entradas.custoErro,
       d3Ligado: entradas.d3Ligado,
       editaisExtraMes: entradas.editaisExtraMes,

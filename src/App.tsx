@@ -64,7 +64,8 @@ export function App() {
     if (!estado || !resultados) return;
     track(EVENTOS.gateView, {
       vertical: estado.verticalId,
-      custo_manual_ano: Math.round(resultados.conservador.custoContinuarManualAno),
+      cenario,
+      custo_manual_ano: Math.round(resultados[cenario].custoContinuarManualAno),
     });
     setStep("gate");
   }
@@ -155,7 +156,9 @@ export function App() {
         <Premissas
           estado={estado}
           setEstado={setEstado}
-          resultadoConservador={resultados.conservador}
+          resultado={resultados[cenario]}
+          cenario={cenario}
+          setCenario={trocarCenario}
           onPremissaEdit={onPremissaEdit}
           onVerRoi={irParaGate}
           onVoltar={() => setStep("hero")}

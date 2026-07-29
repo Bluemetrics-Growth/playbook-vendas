@@ -87,10 +87,12 @@ export function Resultado({
             <div className="metric__note">Tempo até o investimento se pagar.</div>
           </div>
           <div className="metric">
-            <div className="metric__label">Analistas liberados</div>
+            <div className="metric__label">Pessoas liberadas</div>
             <div className="metric__num">{umaCasa(r.analistasLiberados)}</div>
             <div className="metric__note">
-              FTEs equivalentes devolvidos ao trabalho de maior valor.
+              {estado.entradas.pessoas > 0
+                ? `De ${inteiro(estado.entradas.pessoas)} na equipe, devolvidas ao trabalho de maior valor.`
+                : "Pessoas devolvidas ao trabalho de maior valor."}
             </div>
           </div>
         </div>

@@ -226,13 +226,13 @@ export function BusinessCasePdf({ estado, resultado: r, cenario, empresa }: PdfP
         {/* premissas usadas (transparencia, Secao 7) */}
         <Text style={s.sectionTitle}>Premissas usadas</Text>
         <View style={s.premissasBox}>
-          <Prem k="Documentos por mês" v={inteiro(premissas.docsMes)} />
-          <Prem k="Horas por documento" v={umaCasa(premissas.horasPorDoc)} />
-          <Prem k="Custo por hora" v={moeda(premissas.custoHora)} />
-          <Prem k="Redução de tempo com IA" v={porcento(premissas.reducaoTempoIa)} />
+          <Prem k="Pessoas na análise" v={inteiro(estado.entradas.pessoas)} />
+          <Prem k="Documentos por mês" v={inteiro(estado.entradas.docsMes)} />
+          <Prem k="Tempo por documento" v={`${inteiro(estado.entradas.minutosPorDoc)} min`} />
+          <Prem k="Custo mensal por analista" v={moeda(estado.entradas.custoMensalAnalista)} />
+          <Prem k="Ganho de eficiência com IA" v={porcento(premissas.reducaoTempoIa)} />
           <Prem k="Fator de captura (haircut)" v={porcento(premissas.captura)} />
           <Prem k="Taxa de erro atual" v={porcento(premissas.taxaErro)} />
-          <Prem k="Redução de erro com IA" v={porcento(premissas.reducaoErro)} />
         </View>
 
         {exibirInvestimentoPublico && (

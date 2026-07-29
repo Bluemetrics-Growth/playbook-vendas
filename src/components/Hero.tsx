@@ -22,6 +22,7 @@ export function Hero({ onSelect }: { onSelect: (verticalId: string) => void }) {
             <span className="chip">+200 projetos entregues</span>
           </div>
 
+          <div className="vert-label">Escolha a sua área para começar</div>
           <div className="vert-grid">
             {VERTICAIS.map((v) => (
               <button
@@ -31,6 +32,9 @@ export function Hero({ onSelect }: { onSelect: (verticalId: string) => void }) {
               >
                 <span className="vert-card__name">{v.nome}</span>
                 <span className="vert-card__desc">{v.resumo}</span>
+                <span className="vert-card__cta">
+                  Calcular <span aria-hidden="true">›</span>
+                </span>
               </button>
             ))}
           </div>

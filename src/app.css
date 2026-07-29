@@ -231,31 +231,61 @@ img {
 }
 
 /* ----------------------------------------------- seletor de vertical ---- */
+.vert-label {
+  margin: 32px 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+/* 5 cards numa unica linha no desktop; quebra so em telas menores. */
 .vert-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
-  margin: 28px auto 0;
-  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (max-width: 1000px) {
+  .vert-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 720px;
+  }
+}
+@media (max-width: 620px) {
+  .vert-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 .vert-card {
   text-align: left;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(8, 12, 34, 0.46);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: var(--radius-l);
-  padding: 18px 20px;
+  padding: 18px 18px 16px;
   cursor: pointer;
   color: #fff;
   transition: background var(--dur-2) var(--ease-standard),
     border-color var(--dur-2) var(--ease-standard),
+    box-shadow var(--dur-2) var(--ease-standard),
     transform var(--dur-2) var(--ease-out);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-height: 148px;
 }
 .vert-card:hover {
-  background: rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
+  background: #fff;
+  border-color: #fff;
+  color: var(--fg-1);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+.vert-card:hover .vert-card__cta {
+  color: var(--bm-blue);
 }
 .vert-card.is-active {
   background: #fff;
@@ -264,14 +294,31 @@ img {
 }
 .vert-card__name {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 .vert-card__desc {
-  font-size: 13px;
+  font-size: 12.5px;
   opacity: 0.85;
   line-height: 1.35;
+  flex: 1;
+}
+.vert-card__cta {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bm-cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.vert-card__cta span {
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.vert-card:hover .vert-card__cta span {
+  transform: translateX(3px);
 }
 
 /* -------------------------------------------------------- stepper ------- */
@@ -847,4 +894,64 @@ img {
 }
 .footer a {
   color: var(--fg-2);
+}
+
+/* ---------------------------------------- inputs com prefixo/sufixo ----- */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap input {
+  width: 100%;
+}
+.input-wrap.has-prefix input {
+  padding-left: 38px;
+}
+.input-affix {
+  position: absolute;
+  left: 14px;
+  color: var(--fg-3);
+  font-size: 14px;
+  pointer-events: none;
+}
+.input-affix--suffix {
+  left: auto;
+  right: 14px;
+}
+
+/* ---------------------------------------- seletor de cenario (premissas) */
+.scenario-block {
+  margin: 8px 0 4px;
+  padding: 18px;
+  background: var(--neutral-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+}
+.scenario--full {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+.scenario--full button {
+  width: 100%;
+}
+
+/* ---------------------------------------- ajustes avancados ------------- */
+.advanced-toggle {
+  background: none;
+  border: none;
+  color: var(--bm-blue);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 16px 0 8px;
+}
+.advanced-toggle:hover {
+  text-decoration: underline;
+}
+.advanced-body {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
 }
