@@ -1,0 +1,133 @@
+@import "../styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   Base element defaults from the design system.
+   ========================================================================= */
+@layer base {
+  html,
+  body {
+    background: var(--bg);
+    color: var(--fg-1);
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--fg-1);
+    letter-spacing: var(--ls-tight);
+    line-height: var(--lh-tight);
+    font-weight: 600;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p { margin: 0; line-height: var(--lh-body); text-wrap: pretty; }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: rgba(12, 39, 232, 0.22); color: var(--fg-1); }
+
+  :focus-visible {
+    outline: 2px solid var(--bm-blue);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--neutral-300); border-radius: 980px; border: 2px solid var(--bg); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--neutral-400); }
+}
+
+/* =========================================================================
+   Reusable component classes (design-system faithful).
+   ========================================================================= */
+@layer components {
+  .container-wide { width: 100%; max-width: var(--container-wide); margin-inline: auto; padding-inline: var(--space-5); }
+  .container-text { width: 100%; max-width: var(--container-text); margin-inline: auto; padding-inline: var(--space-5); }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--fg-2);
+  }
+
+  /* Buttons — pill shape, per design system. */
+  .btn {
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+    padding: 12px 22px;
+    border: none;
+    cursor: pointer;
+    transition: all var(--dur-2) var(--ease-standard);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--bm-blue); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: var(--link-hover); }
+  .btn-secondary { background: var(--neutral-0); color: var(--bm-blue); border: 1px solid var(--bm-blue); }
+  .btn-secondary:hover:not(:disabled) { background: rgba(12, 39, 232, 0.06); }
+  .btn-tertiary { background: var(--neutral-100); color: var(--fg-1); }
+  .btn-tertiary:hover:not(:disabled) { background: var(--neutral-200); }
+  .btn-ghost { background: transparent; color: var(--fg-1); }
+  .btn-ghost:hover:not(:disabled) { background: var(--neutral-100); }
+  .btn-sm { font-size: var(--fs-body-sm); padding: 8px 16px; }
+
+  /* Cards */
+  .surface-card {
+    background: var(--neutral-0);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-1);
+  }
+  .stage-card {
+    background: var(--neutral-100);
+    border-radius: var(--radius-l);
+  }
+
+  /* Chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-body-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .chip-blue { background: rgba(12, 39, 232, 0.1); color: var(--bm-blue); }
+  .chip-gray { background: var(--neutral-100); color: var(--neutral-700); }
+
+  .mono { font-family: var(--font-mono); font-size: var(--fs-body-sm); }
+}
+
+/* Respect reduced motion globally for non-essential animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
