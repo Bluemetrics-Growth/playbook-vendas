@@ -1,8 +1,9 @@
 # bluemetrics Playbook
 
-Hub de playbooks comerciais internos da BlueMetrics. Ambiente web visual e interativo para os
-executivos **treinarem** e **consultarem** o motion comercial. O primeiro módulo completo é o
-**ABM** (Account-Based Marketing).
+Ambiente web interno de **treinamento e consulta** comercial da BlueMetrics. Uma "escola" de
+playbooks: cada playbook é uma trilha interativa que o time pode estudar do zero (treinar) ou
+consultar no meio da operação. O playbook com conteúdo completo hoje é o **ABM** (Account-Based
+Marketing); o de **CRM no HubSpot** está em construção.
 
 Construído a partir do PRD `PRD BlueMetrics Playbook (Hub + Módulo ABM)`, com fidelidade total ao
 design system da marca (incluído no repo).
@@ -62,8 +63,7 @@ do HubSpot. Nunca commite segredos.
 
 | Variável | Uso |
 |---|---|
-| `NEXT_PUBLIC_HUBSPOT_BASE_URL` | Base do portal HubSpot. Usada nos deep-links e no botão do CRM. |
-| `NEXT_PUBLIC_CRM_URL` | Destino do card CRM na home. Se vazio, cai no base URL acima. |
+| `NEXT_PUBLIC_HUBSPOT_BASE_URL` | Base do portal HubSpot. Usada no botão "Abrir o HubSpot" do playbook de CRM. |
 
 ## Deploy (Vercel)
 
@@ -86,8 +86,8 @@ Defaults adotados na v1, ajustáveis a qualquer momento:
 1. **Gate de acesso:** Vercel Deployment Protection (recomendado, sem código). Ajustar no painel.
 2. **Deep-links do HubSpot:** parametrizados por env (`NEXT_PUBLIC_HUBSPOT_BASE_URL`), sem hardcode
    de IDs sensíveis. Preencher quando o portal e os IDs forem confirmados.
-3. **Card CRM:** abre o HubSpot em nova aba (usa `NEXT_PUBLIC_CRM_URL` ou o base URL). Há também a
-   página `/crm` como placeholder com o mesmo atalho.
+3. **Módulo CRM:** é um playbook/treinamento de HubSpot (trilha em construção). A página `/crm`
+   apresenta o currículo planejado e um atalho "Abrir o HubSpot" enquanto o conteúdo não sai.
 
 ## Convenções
 
