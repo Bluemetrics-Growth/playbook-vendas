@@ -1,6 +1,11 @@
 import { Play, Clock, Video } from "lucide-react";
 import { abmSections } from "@/content/abm/sections";
 
+/** true para arquivos de vídeo locais (mp4/webm); false para embeds (YouTube, Vimeo). */
+function isLocalVideo(url: string): boolean {
+  return /\.(mp4|webm|mov)$/i.test(url) || url.startsWith("/videos");
+}
+
 /**
  * Cabeçalho de aula estilo plataforma de curso: trilha, número da aula e um
  * slot de vídeo 16:9. Quando `videoUrl` existir na seção, embeda; senão mostra
@@ -25,8 +30,17 @@ export function LessonHero({ slug }: { slug: string }) {
         ) : null}
       </div>
 
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border bg-bm-black sm:aspect-[21/9]">
-        {section.videoUrl ? (
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-border bg-bm-black">
+        {section.videoUrl && isLocalVideo(section.videoUrl) ? (
+          <video
+            src={section.videoUrl}
+            poster={section.cover}
+            controls
+            preload="metadata"
+            playsInline
+            className="absolute inset-0 h-full w-full bg-bm-black object-cover"
+          />
+        ) : section.videoUrl ? (
           <iframe
             src={section.videoUrl}
             title={`Aula: ${section.title}`}

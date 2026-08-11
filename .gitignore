@@ -3,6 +3,11 @@
 /.pnp
 .pnp.js
 
+# remotion (projeto de geração de vídeo, isolado do build do Next)
+/remotion/node_modules
+/remotion/out
+/remotion/.remotion
+
 # next.js
 /.next/
 /out/
