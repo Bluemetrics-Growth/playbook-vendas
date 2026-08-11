@@ -1,23 +1,31 @@
 import type { Module } from "./types";
 
-// Lista de modulos da home. Adicionar modulo = adicionar item aqui.
-// Nomes de modulos futuros sao sugestoes: cortar ou renomear a vontade.
+// Catálogo de módulos do hub. Adicionar módulo = adicionar item aqui.
+// Nomes de módulos futuros são sugestões: cortar ou renomear a vontade.
 export const modules: Module[] = [
   {
     slug: "abm",
     title: "ABM",
-    summary: "O sistema operacional de crescimento por conta.",
+    summary:
+      "Account-Based Marketing na prática: dois tiers, dois scores, esteiras de cadência e medição por conta.",
     status: "active",
     href: "/abm",
     icon: "Target",
+    cover: "/brand/bg-liquid-blue.png",
+    kicker: "Trilha",
+    lessons: 10,
+    duration: "~45 min",
   },
   {
     slug: "crm",
-    title: "CRM",
-    summary: "O ABM roda no HubSpot. Atalho direto para o CRM.",
-    status: "shortcut",
+    title: "CRM no HubSpot",
+    summary:
+      "Playbook e treinamento de HubSpot: como operar o CRM, propriedades, listas, workflows e relatórios.",
+    status: "coming-soon",
     href: "/crm",
     icon: "Database",
+    cover: "/brand/bg-network.jpg",
+    kicker: "Playbook",
   },
   {
     slug: "prospeccao-outbound",
@@ -25,6 +33,8 @@ export const modules: Module[] = [
     summary: "Motor de prospecção ativa e cadências frias.",
     status: "coming-soon",
     icon: "Send",
+    cover: "/brand/bg-rays.jpg",
+    kicker: "Trilha",
   },
   {
     slug: "discovery-qualificacao",
@@ -32,6 +42,8 @@ export const modules: Module[] = [
     summary: "Descoberta de dor e qualificação de oportunidade.",
     status: "coming-soon",
     icon: "Search",
+    cover: "/brand/bg-mesh-purple.jpg",
+    kicker: "Trilha",
   },
   {
     slug: "objecoes",
@@ -39,6 +51,8 @@ export const modules: Module[] = [
     summary: "Biblioteca de objeções e respostas.",
     status: "coming-soon",
     icon: "MessageSquareWarning",
+    cover: "/brand/bg-8.jpg",
+    kicker: "Consulta",
   },
   {
     slug: "propostas-pricing",
@@ -46,6 +60,8 @@ export const modules: Module[] = [
     summary: "Estrutura de proposta, faseamento e preço.",
     status: "coming-soon",
     icon: "FileText",
+    cover: "/brand/bg-liquid-deep.png",
+    kicker: "Trilha",
   },
   {
     slug: "solution-packs",
@@ -53,6 +69,8 @@ export const modules: Module[] = [
     summary: "Pacotes de solução por dor e segmento.",
     status: "coming-soon",
     icon: "Package",
+    cover: "/brand/bg-liquid-3.png",
+    kicker: "Consulta",
   },
   {
     slug: "cases-prova-social",
@@ -60,6 +78,8 @@ export const modules: Module[] = [
     summary: "Casos, resultados e provas por indústria.",
     status: "coming-soon",
     icon: "Award",
+    cover: "/brand/bg-7.jpg",
+    kicker: "Consulta",
   },
   {
     slug: "eventos-field",
@@ -67,5 +87,7 @@ export const modules: Module[] = [
     summary: "Roundtables, eventos e captura de intenção.",
     status: "coming-soon",
     icon: "CalendarDays",
+    cover: "/brand/bg-mesh-purple.jpg",
+    kicker: "Trilha",
   },
 ];

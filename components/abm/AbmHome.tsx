@@ -90,22 +90,33 @@ function TreinarView({
             >
               <Link
                 href={s.href}
-                className="surface-card group flex items-center gap-4 p-4 transition-all hover:border-border-strong hover:shadow-2"
+                className="surface-card group flex items-center gap-4 overflow-hidden p-2.5 pr-4 transition-all hover:border-border-strong hover:shadow-2"
               >
-                <span
-                  className={[
-                    "flex h-9 w-9 flex-none items-center justify-center rounded-pill font-display text-body-sm font-semibold",
-                    isSeen ? "bg-success/15 text-success" : "bg-bg-stage text-fg-muted",
-                  ].join(" ")}
-                  style={isSeen ? { background: "rgba(0,209,0,0.14)", color: "#008000" } : undefined}
-                >
-                  {isSeen ? <Check size={16} /> : i + 1}
+                {/* Capa da aula */}
+                <span className="relative h-14 w-24 flex-none overflow-hidden rounded-m bg-bm-black">
+                  <span
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                    style={{ backgroundImage: `url(${s.cover})` }}
+                  />
+                  <span className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,6,10,0.1), rgba(6,6,10,0.55))" }} />
+                  <span
+                    className={[
+                      "absolute left-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-pill font-display text-[12px] font-semibold",
+                      isSeen ? "text-white" : "bg-white/85 text-primary",
+                    ].join(" ")}
+                    style={isSeen ? { background: "var(--bm-green)" } : undefined}
+                  >
+                    {isSeen ? <Check size={14} /> : i + 1}
+                  </span>
                 </span>
                 <span className="flex-1">
                   <span className="flex items-center gap-2 font-medium text-fg">
-                    <Icon name={s.icon} size={16} className="text-fg-muted" /> {s.title}
+                    <Icon name={s.icon} size={15} className="text-fg-muted" /> {s.title}
                   </span>
-                  <span className="text-body-sm text-fg-muted">{s.short}</span>
+                  <span className="flex items-center gap-2 text-body-sm text-fg-muted">
+                    {s.short}
+                    {s.duration ? <span className="text-fg-hint">· {s.duration}</span> : null}
+                  </span>
                 </span>
                 <ArrowRight size={18} className="flex-none text-fg-hint transition-transform group-hover:translate-x-0.5" />
               </Link>

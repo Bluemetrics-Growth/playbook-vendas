@@ -4,7 +4,7 @@
 // prevalece o HubSpot.
 // =========================================================================
 
-export type ModuleStatus = "active" | "shortcut" | "coming-soon";
+export type ModuleStatus = "active" | "coming-soon";
 
 export interface Module {
   slug: string;
@@ -13,6 +13,10 @@ export interface Module {
   status: ModuleStatus;
   href?: string;
   icon: string; // nome de icone lucide-react
+  cover: string; // capa do card (imagem em /brand)
+  kicker?: string; // rotulo curto (ex.: "Trilha", "Playbook")
+  lessons?: number; // numero de aulas/secoes
+  duration?: string; // ex.: "~45 min"
 }
 
 // ---------------------------------------------------------------- Scores
@@ -172,6 +176,9 @@ export interface AbmSection {
   short: string;
   icon: string;
   group: "Tese" | "Modelo" | "Operação" | "Gestão";
+  cover: string; // capa da aula (imagem em /brand)
+  duration?: string; // ex.: "5 min"
+  videoUrl?: string; // embed futuro; vazio => placeholder "vídeo em breve"
 }
 
 export type SearchKind =
