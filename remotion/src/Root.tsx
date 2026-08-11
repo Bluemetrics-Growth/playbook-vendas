@@ -5,7 +5,7 @@ import { lessons } from "./lessons";
 import "./fonts";
 
 const FPS = 30;
-const DURATION = 14 * FPS; // 14s
+const DURATION = 18 * FPS; // 18s: título + esquema visual animado
 const WIDTH = 1280;
 const HEIGHT = 720;
 
