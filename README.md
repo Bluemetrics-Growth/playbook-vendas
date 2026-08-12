@@ -1,11 +1,11 @@
-# bluemetrics Playbook
+# Playbook ABM bluemetrics
 
-Ambiente web interno de **treinamento e consulta** comercial da BlueMetrics. Uma "escola" de
-playbooks: cada playbook é uma trilha interativa que o time pode estudar do zero (treinar) ou
-consultar no meio da operação. O playbook com conteúdo completo hoje é o **ABM** (Account-Based
-Marketing); o de **CRM no HubSpot** está em construção.
+Ambiente web interno de **treinamento e consulta** do playbook de **ABM** (Account-Based Marketing)
+da BlueMetrics. Uma trilha interativa única que o time pode estudar do zero (treinar) ou consultar no
+meio da operação. É um link único, focado só no ABM, sem hub nem catálogo de cursos. A raiz (`/`) leva
+direto pro playbook (`/abm`).
 
-Construído a partir do PRD `PRD BlueMetrics Playbook (Hub + Módulo ABM)`, com fidelidade total ao
+Construído a partir do PRD `PRD BlueMetrics Playbook (Módulo ABM)`, com fidelidade total ao
 design system da marca (incluído no repo).
 
 ## Stack
@@ -34,8 +34,7 @@ Atualizar o playbook é editar dados, não componentes.
 
 ```
 content/
-  types.ts            Tipos (Module, Score, Workflow, Task, Property, ...)
-  modules.ts          Cards da home (adicionar módulo = adicionar item)
+  types.ts            Tipos (Score, Workflow, Task, Property, ...)
   abm/
     scores.ts         Os dois scores (categorias, tetos, bandas, penalidade, preset)
     workflows.ts      Todas as esteiras e suas tasks (roteiros)
@@ -63,7 +62,7 @@ do HubSpot. Nunca commite segredos.
 
 | Variável | Uso |
 |---|---|
-| `NEXT_PUBLIC_HUBSPOT_BASE_URL` | Base do portal HubSpot. Usada no botão "Abrir o HubSpot" do playbook de CRM. |
+| `NEXT_PUBLIC_HUBSPOT_BASE_URL` | Base do portal HubSpot. Usada nos deep-links "Abrir o HubSpot" do playbook. |
 
 ## Deploy (Vercel)
 
@@ -86,8 +85,8 @@ Defaults adotados na v1, ajustáveis a qualquer momento:
 1. **Gate de acesso:** Vercel Deployment Protection (recomendado, sem código). Ajustar no painel.
 2. **Deep-links do HubSpot:** parametrizados por env (`NEXT_PUBLIC_HUBSPOT_BASE_URL`), sem hardcode
    de IDs sensíveis. Preencher quando o portal e os IDs forem confirmados.
-3. **Módulo CRM:** é um playbook/treinamento de HubSpot (trilha em construção). A página `/crm`
-   apresenta o currículo planejado e um atalho "Abrir o HubSpot" enquanto o conteúdo não sai.
+3. **Escopo:** o app é só o playbook de ABM. Não há hub nem catálogo de outros cursos; a raiz
+   redireciona pra `/abm`.
 
 ## Convenções
 

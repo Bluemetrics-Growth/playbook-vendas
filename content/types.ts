@@ -4,21 +4,6 @@
 // prevalece o HubSpot.
 // =========================================================================
 
-export type ModuleStatus = "active" | "coming-soon";
-
-export interface Module {
-  slug: string;
-  title: string;
-  summary: string;
-  status: ModuleStatus;
-  href?: string;
-  icon: string; // nome de icone lucide-react
-  cover: string; // capa do card (imagem em /brand)
-  kicker?: string; // rotulo curto (ex.: "Trilha", "Playbook")
-  lessons?: number; // numero de aulas/secoes
-  duration?: string; // ex.: "~45 min"
-}
-
 // ---------------------------------------------------------------- Scores
 export interface ScoreIncrement {
   id: string;
