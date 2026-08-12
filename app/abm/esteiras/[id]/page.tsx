@@ -5,7 +5,6 @@ import { workflows, workflowsById } from "@/content/abm/workflows";
 import { CadenceTimeline } from "@/components/abm/CadenceTimeline";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { BandBadge } from "@/components/ui/BandBadge";
-import { SeenTracker } from "@/components/shell/SeenTracker";
 
 export function generateStaticParams() {
   return workflows.map((w) => ({ id: w.id }));
@@ -22,7 +21,6 @@ export default function EsteiraDetailPage({ params }: { params: { id: string } }
 
   return (
     <div>
-      <SeenTracker slug="esteiras" />
       <Link href="/abm/esteiras" className="mb-4 inline-flex items-center gap-1.5 text-body-sm text-fg-muted hover:text-fg">
         <ArrowLeft size={15} /> Todas as esteiras
       </Link>

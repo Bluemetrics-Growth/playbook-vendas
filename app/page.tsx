@@ -88,10 +88,10 @@ export default function HomePage() {
             <span className="flex h-11 w-11 items-center justify-center rounded-m bg-primary-soft text-primary">
               <GraduationCap size={22} strokeWidth={1.5} />
             </span>
-            <h3 className="font-display text-h3 font-semibold">Treinar</h3>
+            <h3 className="font-display text-h3 font-semibold">Estudar</h3>
             <p className="text-body-sm text-fg-muted">
-              Uma trilha guiada por playbook, com capas por aula, progresso salvo e um checkpoint no
-              fim. Ideal para onboarding e para adotar um novo motion. Em breve, com vídeos.
+              Uma trilha guiada por playbook, com capas por aula e um teste no fim para reforçar o que
+              importa. Ideal para onboarding e para adotar um novo motion. Em breve, com vídeos.
             </p>
           </div>
           <div className="stage-card flex flex-col gap-3 p-7">

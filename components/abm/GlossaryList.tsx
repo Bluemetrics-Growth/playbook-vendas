@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Search, ArrowUpRight } from "lucide-react";
+import { Search } from "lucide-react";
 import { glossary } from "@/content/abm/glossary";
 
 export function GlossaryList() {
@@ -27,11 +26,6 @@ export function GlossaryList() {
           <div key={t.term} className="surface-card flex flex-col gap-1.5 p-4">
             <dt className="font-display text-h4 font-semibold">{t.term}</dt>
             <dd className="text-body-sm text-fg-muted">{t.definition}</dd>
-            {t.seeAlso ? (
-              <Link href={t.seeAlso} className="mt-1 inline-flex w-fit items-center gap-1 text-body-sm font-medium text-primary">
-                {t.seeAlsoLabel ?? "Ver em ação"} <ArrowUpRight size={14} />
-              </Link>
-            ) : null}
           </div>
         ))}
         {rows.length === 0 ? <p className="text-fg-muted">Nada encontrado.</p> : null}

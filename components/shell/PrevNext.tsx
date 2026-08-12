@@ -1,19 +1,11 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { abmSections } from "@/content/abm/sections";
-import { useProgress } from "@/lib/progress";
 
 /**
- * Rodapé Anterior / Próximo da trilha. Só aparece no modo Treinar.
- * A última seção aponta para o checkpoint.
+ * Rodapé Anterior / Próximo da trilha. A última seção aponta para o teste.
  */
 export function PrevNext({ slug }: { slug: string }) {
-  const mode = useProgress((s) => s.mode);
-  const hydrated = useProgress((s) => s.hydrated);
-  if (hydrated && mode !== "treinar") return null;
-
   const idx = abmSections.findIndex((s) => s.slug === slug);
   if (idx === -1) return null;
   const prev = idx > 0 ? abmSections[idx - 1] : null;
@@ -34,7 +26,7 @@ export function PrevNext({ slug }: { slug: string }) {
 
       {isLast ? (
         <Link href="/abm/checkpoint" className="btn btn-primary">
-          Checkpoint final <ArrowRight size={16} />
+          Teste seus conhecimentos <ArrowRight size={16} />
         </Link>
       ) : next ? (
         <Link href={next.href} className="btn btn-primary">

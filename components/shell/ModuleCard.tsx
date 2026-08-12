@@ -4,22 +4,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Module } from "@/content/types";
 import { Icon } from "@/components/ui/Icon";
-import { useProgress } from "@/lib/progress";
-import { abmSections } from "@/content/abm/sections";
 import { ArrowRight, Lock, Play, BookOpen, Clock } from "lucide-react";
 
 export function ModuleCard({ module, index }: { module: Module; index: number }) {
-  const seen = useProgress((s) => s.seen);
-  const hydrated = useProgress((s) => s.hydrated);
-
   const isActive = module.status === "active";
   const clickable = !!module.href; // active ou coming-soon com landing (ex.: CRM)
   const locked = module.status === "coming-soon";
-
-  // Progresso só faz sentido para o ABM (único com trilha real hoje).
-  const abmDone = hydrated && module.slug === "abm" ? abmSections.filter((s) => seen[s.slug]).length : 0;
-  const abmTotal = abmSections.length;
-  const started = abmDone > 0;
 
   const inner = (
     <motion.div
@@ -82,23 +72,10 @@ export function ModuleCard({ module, index }: { module: Module; index: number })
 
         <p className="text-body-sm leading-relaxed text-fg-muted">{module.summary}</p>
 
-        {/* Progresso (ABM) */}
-        {isActive && module.slug === "abm" ? (
-          <div className="mt-1 flex flex-col gap-1">
-            <div className="flex items-center justify-between text-[11px] text-fg-muted">
-              <span>{started ? "Continuar" : "Começar trilha"}</span>
-              <span className="mono">{abmDone}/{abmTotal}</span>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-pill bg-bg-stage">
-              <div className="h-full rounded-pill bg-primary transition-[width] duration-500" style={{ width: `${(abmDone / abmTotal) * 100}%` }} />
-            </div>
-          </div>
-        ) : null}
-
         <div className="mt-auto pt-1 text-body-sm font-medium">
           {isActive ? (
             <span className="inline-flex items-center gap-1.5 text-primary">
-              {started ? "Retomar" : "Entrar"} <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+              Entrar <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </span>
           ) : clickable ? (
             <span className="inline-flex items-center gap-1.5 text-fg-muted group-hover:text-primary">

@@ -53,7 +53,7 @@ export const scoreAbordagem: Score = {
     },
   ],
   bands: [
-    { min: 0, max: 39, label: "Nutrição", kind: "nurture", workflowId: "T2-0", note: "Só a camada always-on trabalha." },
+    { min: 0, max: 39, label: "Nutrição", kind: "nurture", workflowId: "T2-0", note: "Só a comunicação de marketing trabalha." },
     { min: 40, max: 59, label: "Reconexão leve", kind: "warm", workflowId: "T2-1" },
     { min: 60, max: 74, label: "Observação e valor", kind: "attention", workflowId: "T2-2" },
     { min: 75, max: 100, label: "Gatilho de reunião", kind: "trigger", workflowId: "T2-3", sla: "24h" },

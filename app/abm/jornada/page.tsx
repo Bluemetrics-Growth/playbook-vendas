@@ -10,7 +10,7 @@ export default function JornadaPage() {
       <PageHeader
         eyebrow="ABM · Jornada"
         title="A jornada da conta"
-        intro="O ciclo completo como um sistema vivo. Clique num estado para ver o que acontece ali, ou toque para animar uma conta percorrendo o ciclo, do Tier 2 ao fechamento."
+        intro="O ciclo completo da conta, do Tier 2 ao fechamento. Clique em cada estado para ver o que acontece ali: a banda, o dono, o gatilho de saída e a esteira que dispara."
       />
       <AccountJourney />
     </SectionShell>

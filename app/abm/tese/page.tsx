@@ -2,7 +2,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionShell } from "@/components/abm/SectionShell";
 import { TesePrinciples } from "@/components/abm/TesePrinciples";
 import { DemandVsAbm } from "@/components/abm/DemandVsAbm";
-import { teseEconomics } from "@/content/abm/prose";
+import { teseModel } from "@/content/abm/prose";
 
 export const metadata = { title: "A Tese" };
 
@@ -26,8 +26,8 @@ export default function TesePage() {
       </section>
 
       <section className="stage-card p-6">
-        <h2 className="mb-2 font-display text-h4 font-semibold">A economia que puxa ABM</h2>
-        <p className="max-w-text text-body text-fg-muted">{teseEconomics}</p>
+        <h2 className="mb-2 font-display text-h4 font-semibold">Do porquê ao modelo</h2>
+        <p className="max-w-text text-body text-fg-muted">{teseModel}</p>
       </section>
     </SectionShell>
   );

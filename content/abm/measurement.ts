@@ -1,16 +1,9 @@
-import type { MeasureRow, Metric } from "../types";
+import type { Metric } from "../types";
 
-// A.7 — Medição.
-export const measureShift: MeasureRow[] = [
-  { stop: "Número de leads / MQLs", start: "Engajamento e penetração de conta (% do comitê)" },
-  { stop: "Volume de disparos e cliques isolados", start: "Pipeline criado, influenciado e acelerado" },
-  { stop: "Custo por lead", start: "Reuniões com contas-alvo" },
-  { stop: "Formulários preenchidos como meta", start: "Velocidade de deal e cobertura de pipeline" },
-];
-
+// Mensuração. O que olhamos por conta e pipeline, e o painel no HubSpot.
 export const resultMetrics: Metric[] = [
   { label: "Pipeline criado, influenciado e acelerado" },
-  { label: "Reuniões com contas-alvo", detail: "Meta: 5 a 8 novas em 90 dias" },
+  { label: "Reuniões com contas-alvo" },
   { label: "Win rate por conta-alvo vs baseline" },
 ];
 
@@ -23,23 +16,16 @@ export const progressMetrics: Metric[] = [
   { label: "Cobertura de pipeline" },
 ];
 
-export const mqa = {
-  title: "MQA (Marketing Qualified Account)",
-  body:
-    "Substitui o MQL. Implementado pelos dois scores e seus gatilhos de banda: no Tier 2, cruzar 75 qualifica para abordagem (vira SQL, SLA 24h); no Tier 1, cruzar 80 dispara a esteira de fechamento.",
-};
-
-export const threeRs = ["Relacionamento", "Reputação", "Receita"];
-
-export const kpiContract: { label: string; detail: string }[] = [
-  { label: "ICP e tiers", detail: "Definição de ICP, dos dois tiers e do modelo de score." },
-  { label: "Critério de MQA", detail: "Quando uma conta é qualificada por marketing." },
+// O acordo entre marketing e comercial (co-donos do mesmo resultado).
+export const alignment: { label: string; detail: string }[] = [
+  { label: "ICP e tiers", detail: "Quem é conta-alvo, como se define cada tier e o modelo de score." },
+  { label: "Critério de MQA", detail: "Quando uma conta está qualificada por marketing." },
   { label: "SLAs", detail: "Prazos de resposta por gatilho (sinal quente = 24h)." },
-  { label: "Métricas e metas", detail: "Resultado e progresso, com metas do período." },
-  { label: "Ritual e dono por conta", detail: "Cadência de revisão e responsável nomeado." },
+  { label: "KPIs por conta", detail: "Métricas de resultado e de progresso que os dois acompanham." },
+  { label: "Ritual e dono por conta", detail: "Cadência semanal de revisão e responsável nomeado por conta." },
 ];
 
-// Dashboard ilustrativo (dados de exemplo, nao puxam dado vivo na v1).
+// Painel do HubSpot (dados de exemplo, ilustrativos).
 export const sampleFunnel = [
   { stage: "Contas-alvo", value: 120 },
   { stage: "Engajadas", value: 74 },

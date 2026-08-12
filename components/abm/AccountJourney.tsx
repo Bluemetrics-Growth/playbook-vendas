@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Pause, Play, RotateCcw, ArrowRight, Radio, ArrowDown } from "lucide-react";
+import { ArrowRight, Megaphone, ArrowDown } from "lucide-react";
 import type { BandKind } from "@/content/types";
 import { kindMeta } from "@/components/ui/BandBadge";
 import { Icon } from "@/components/ui/Icon";
@@ -33,119 +33,55 @@ const states: JourneyState[] = [
 ];
 
 export function AccountJourney() {
-  const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [selected, setSelected] = useState<string | null>(states[0].id);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (playing) {
-      timer.current = setInterval(() => {
-        setCurrent((c) => {
-          const next = c + 1;
-          if (next >= states.length) {
-            setPlaying(false);
-            return c;
-          }
-          setSelected(states[next].id);
-          return next;
-        });
-      }, 1400);
-    }
-    return () => {
-      if (timer.current) clearInterval(timer.current);
-    };
-  }, [playing]);
-
-  function play() {
-    if (current >= states.length - 1) {
-      setCurrent(0);
-      setSelected(states[0].id);
-    }
-    setPlaying(true);
-  }
-  function reset() {
-    setPlaying(false);
-    setCurrent(0);
-    setSelected(states[0].id);
-  }
-
+  const [selected, setSelected] = useState<string>(states[0].id);
   const activeState = states.find((s) => s.id === selected) ?? states[0];
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Controles */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          {playing ? (
-            <button onClick={() => setPlaying(false)} className="btn btn-sm btn-secondary"><Pause size={15} /> Pausar</button>
-          ) : (
-            <button onClick={play} className="btn btn-sm btn-primary"><Play size={15} /> Tocar</button>
-          )}
-          <button onClick={reset} className="btn btn-sm btn-ghost"><RotateCcw size={15} /> Reiniciar</button>
-        </div>
-        <span className="flex items-center gap-2 text-body-sm text-fg-muted">
-          <Radio size={15} className="text-bm-purple" /> Air cover always-on por baixo, em todas as etapas.
-        </span>
-      </div>
-
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px]">
-        {/* Máquina de estados */}
-        <div className="relative">
-          {/* camada always-on */}
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 top-0 rounded-xl"
-            style={{ background: "linear-gradient(180deg, transparent 60%, rgba(123,0,220,0.08))" }}
-            animate={{ opacity: [0.4, 0.8, 0.4] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <ol className="relative flex flex-col gap-2">
-            {states.map((s, i) => {
-              const isCurrent = i === current;
-              const isSelected = s.id === selected;
-              const done = i < current;
-              return (
-                <li key={s.id}>
-                  <button
-                    onClick={() => setSelected(s.id)}
-                    className={[
-                      "flex w-full items-center gap-3 rounded-l border p-3 text-left transition-all",
-                      isSelected ? "border-primary bg-surface shadow-2" : "border-border bg-surface hover:border-border-strong",
-                    ].join(" ")}
-                    style={isCurrent ? { boxShadow: `0 0 0 2px ${kindMeta[s.kind].color}` } : undefined}
+        {/* Fluxo de estados (clicável) */}
+        <ol className="relative flex flex-col gap-2">
+          {states.map((s) => {
+            const isSelected = s.id === selected;
+            return (
+              <li key={s.id}>
+                <button
+                  onClick={() => setSelected(s.id)}
+                  className={[
+                    "flex w-full items-center gap-3 rounded-l border p-3 text-left transition-all",
+                    isSelected ? "border-primary bg-surface shadow-2" : "border-border bg-surface hover:border-border-strong",
+                  ].join(" ")}
+                >
+                  <span
+                    className="flex h-9 w-9 flex-none items-center justify-center rounded-full"
+                    style={{ background: kindMeta[s.kind].bg, color: kindMeta[s.kind].color }}
                   >
-                    <span
-                      className="flex h-9 w-9 flex-none items-center justify-center rounded-full"
-                      style={{ background: kindMeta[s.kind].bg, color: kindMeta[s.kind].color, opacity: done ? 0.55 : 1 }}
-                    >
-                      <Icon name={kindMeta[s.kind].icon} size={16} />
+                    <Icon name={kindMeta[s.kind].icon} size={16} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <span className="chip chip-gray text-[10px]">{s.phase}</span>
+                      <span className="font-medium text-fg">{s.title}</span>
                     </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-2">
-                        <span className="chip chip-gray text-[10px]">{s.phase}</span>
-                        <span className="font-medium text-fg">{s.title}</span>
-                      </span>
-                      {s.band ? <span className="mono text-[12px] text-fg-muted">Score {s.band}</span> : null}
+                    {s.band ? <span className="mono text-[12px] text-fg-muted">Score {s.band}</span> : null}
+                  </span>
+                  {s.sla ? (
+                    <span className="chip text-[11px] flex-none" style={{ background: "rgba(255,68,0,0.1)", color: "var(--danger)" }}>
+                      SLA {s.sla}
                     </span>
-                    {isCurrent ? (
-                      <motion.span layoutId="journey-token" className="flex-none rounded-pill bg-primary px-2 py-0.5 text-[11px] font-semibold text-white">
-                        conta
-                      </motion.span>
-                    ) : null}
-                  </button>
-
-                  {s.transition ? (
-                    <div className="flex items-center gap-2 py-1 pl-6 text-[12px] text-fg-muted">
-                      <ArrowDown size={13} className="text-fg-hint" />
-                      <span className="rounded-pill bg-bg-stage px-2 py-0.5">{s.transition}</span>
-                    </div>
                   ) : null}
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+                </button>
+
+                {s.transition ? (
+                  <div className="flex items-center gap-2 py-1 pl-6 text-[12px] text-fg-muted">
+                    <ArrowDown size={13} className="text-fg-hint" />
+                    <span className="rounded-pill bg-bg-stage px-2 py-0.5">{s.transition}</span>
+                  </div>
+                ) : null}
+              </li>
+            );
+          })}
+        </ol>
 
         {/* Detalhe do estado */}
         <div className="lg:sticky lg:top-6 lg:self-start">
@@ -179,11 +115,11 @@ export function AccountJourney() {
       </div>
 
       <div className="flex items-start gap-3 rounded-m border border-border bg-bg-soft px-4 py-3 text-body-sm text-fg-muted">
-        <Icon name="Lock" size={16} className="mt-0.5 flex-none text-primary" />
+        <Megaphone size={16} className="mt-0.5 flex-none" style={{ color: "var(--bm-purple)" }} />
         <span>
-          <strong className="text-fg">Tier 1 nunca volta para Tier 2.</strong> A penalidade por inatividade move a
-          conta entre as bandas do Tier 1 (ativação ↔ reengajamento), sem rebaixar o tier. A saída só acontece no
-          fechamento do deal.
+          <strong className="text-fg">Marketing sustenta o comitê em todas as etapas.</strong> Os anúncios seguem
+          presentes com frequência e segmentação ao longo de toda a jornada, do primeiro contato ao fechamento. O
+          Tier 1 nunca volta para Tier 2: o score move entre bandas, a saída só acontece no fechamento do deal.
         </span>
       </div>
     </div>

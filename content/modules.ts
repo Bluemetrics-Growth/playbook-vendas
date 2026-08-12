@@ -12,9 +12,9 @@ export const modules: Module[] = [
     href: "/abm",
     icon: "Target",
     cover: "/brand/bg-liquid-blue.png",
-    kicker: "Trilha",
-    lessons: 10,
-    duration: "~45 min",
+    kicker: "Playbook",
+    lessons: 11,
+    duration: "~55 min",
   },
   {
     slug: "crm",

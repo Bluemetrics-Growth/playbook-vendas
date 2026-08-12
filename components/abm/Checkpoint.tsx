@@ -3,33 +3,76 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Check, X, RotateCcw, PartyPopper, ArrowLeft } from "lucide-react";
-import { checkpoint } from "@/content/abm/quiz";
+import { Check, X, RotateCcw, PartyPopper, ArrowLeft, Play, Sparkles } from "lucide-react";
+import type { QuizQuestion } from "@/content/types";
+import { questionBank, quizConfig } from "@/content/abm/quiz";
+
+interface DrawnQuestion extends QuizQuestion {
+  order: number[]; // ordem embaralhada das opções (índices originais)
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Sorteia perTest perguntas do banco e embaralha as opções de cada uma. */
+function drawTest(): DrawnQuestion[] {
+  return shuffle(questionBank)
+    .slice(0, quizConfig.perTest)
+    .map((q) => ({ ...q, order: shuffle(q.options.map((_, i) => i)) }));
+}
 
 export function Checkpoint() {
+  const [questions, setQuestions] = useState<DrawnQuestion[] | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
 
+  function start() {
+    setQuestions(drawTest());
+    setAnswers({});
+  }
   function pick(qid: string, idx: number) {
     setAnswers((a) => (a[qid] !== undefined ? a : { ...a, [qid]: idx }));
   }
-  function reset() {
-    setAnswers({});
+
+  // Tela de entrada convidativa. Não expõe o tamanho do banco.
+  if (!questions) {
+    return (
+      <div className="surface-card flex flex-col items-center gap-4 p-8 text-center">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <Sparkles size={26} />
+        </span>
+        <h2 className="font-display text-h2 font-semibold">Teste seus conhecimentos</h2>
+        <p className="max-w-narrow text-body text-fg-muted">
+          Um teste rápido com {quizConfig.perTest} perguntas sorteadas, cheias de exemplos do dia a dia da operação.
+          Sem nota, sem pressão. Cada rodada traz perguntas diferentes, então dá para voltar sempre que quiser.
+        </p>
+        <button onClick={start} className="btn btn-primary">
+          <Play size={16} /> Começar teste
+        </button>
+      </div>
+    );
   }
 
+  const total = questions.length;
+  const correct = questions.filter((q) => answers[q.id] === q.answer).length;
   const answered = Object.keys(answers).length;
-  const correct = checkpoint.filter((q) => answers[q.id] === q.answer).length;
-  const allDone = answered === checkpoint.length;
+  const allDone = answered === total;
 
   return (
     <div className="flex flex-col gap-5">
       <div className="surface-card flex items-center justify-between gap-4 p-4">
         <span className="text-body-sm text-fg-muted">
-          Sem nota formal. É reforço dos pontos que mais confundem. Feedback imediato.
+          {quizConfig.perTest} perguntas sorteadas. Feedback na hora. É só reforço.
         </span>
-        <span className="mono flex-none text-body-sm">{correct}/{checkpoint.length}</span>
+        <span className="mono flex-none text-body-sm">{correct}/{total}</span>
       </div>
 
-      {checkpoint.map((q, qi) => {
+      {questions.map((q, qi) => {
         const chosen = answers[q.id];
         const done = chosen !== undefined;
         return (
@@ -39,7 +82,8 @@ export function Checkpoint() {
               {q.question}
             </p>
             <div className="flex flex-col gap-2">
-              {q.options.map((opt, oi) => {
+              {q.order.map((oi) => {
+                const opt = q.options[oi];
                 const isAnswer = oi === q.answer;
                 const isChosen = oi === chosen;
                 let cls = "border-border hover:border-border-strong";
@@ -53,7 +97,7 @@ export function Checkpoint() {
                     className={`flex items-center gap-3 rounded-m border p-3 text-left text-body-sm transition-colors disabled:cursor-default ${cls}`}
                   >
                     <span className="flex h-5 w-5 flex-none items-center justify-center rounded-full border border-border text-[11px]">
-                      {done && isAnswer ? <Check size={13} className="text-success" /> : done && isChosen ? <X size={13} className="text-danger" /> : String.fromCharCode(65 + oi)}
+                      {done && isAnswer ? <Check size={13} className="text-success" /> : done && isChosen ? <X size={13} className="text-danger" /> : ""}
                     </span>
                     <span className="text-fg">{opt}</span>
                   </button>
@@ -78,15 +122,15 @@ export function Checkpoint() {
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary">
             <PartyPopper size={24} />
           </span>
-          <h3 className="font-display text-h3 font-semibold">Você acertou {correct} de {checkpoint.length}.</h3>
+          <h3 className="font-display text-h3 font-semibold">Você acertou {correct} de {total}.</h3>
           <p className="max-w-narrow text-body-sm text-fg-muted">
-            {correct === checkpoint.length
-              ? "Modelo dominado. Agora é operar sob sinal e registrar tudo no HubSpot."
-              : "Bom trabalho. Revise as seções dos pontos que escaparam e volte quando quiser."}
+            {correct === total
+              ? "Mandou bem. Cada nova rodada sorteia outras perguntas, então vale voltar para treinar os cenários que ainda não apareceram."
+              : "Bom treino. Revise os pontos que escaparam e faça outra rodada: as perguntas mudam a cada vez."}
           </p>
           <div className="flex gap-2">
-            <button onClick={reset} className="btn btn-tertiary"><RotateCcw size={15} /> Refazer</button>
-            <Link href="/abm" className="btn btn-primary"><ArrowLeft size={15} /> Voltar ao ABM</Link>
+            <button onClick={start} className="btn btn-primary"><RotateCcw size={15} /> Nova rodada</button>
+            <Link href="/abm" className="btn btn-tertiary"><ArrowLeft size={15} /> Voltar ao ABM</Link>
           </div>
         </div>
       ) : null}

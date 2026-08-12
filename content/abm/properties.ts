@@ -1,6 +1,7 @@
-import type { ChecklistItem, Property } from "../types";
+import type { Property } from "../types";
 
-// A.6 — Fundação no HubSpot (propriedades). Espelho do CRM.
+// Propriedades no HubSpot (espelho do CRM). Já estão construídas: aqui a gente
+// explica o que é cada campo e para que serve na operação.
 export const properties: Property[] = [
   {
     name: "Score de Abordagem",
@@ -38,7 +39,7 @@ export const properties: Property[] = [
     name: "Buying Role",
     object: "Contato",
     type: "Dropdown (Decisor / Influenciador / Usuário / Bloqueador)",
-    usage: "Público de ads e penetração de comitê",
+    usage: "Público dos anúncios e penetração de comitê",
   },
   {
     name: "Resultado da reunião ABM",
@@ -54,36 +55,8 @@ export const properties: Property[] = [
   },
 ];
 
-export const alwaysOn = {
-  title: "Público always-on de ads",
+export const marketingComms = {
+  title: "Comunicação de marketing no comitê",
   body:
-    "Lista ativa de Contatos com Buying Role conhecido E empresa com Target Account = true, sincronizada com o LinkedIn (matched audience). Vale para os dois tiers e todas as etapas. É lista mais campanha mantida por Marketing.",
+    "Uma lista ativa de contatos com Buying Role conhecido, em empresas Target Account, sincronizada com o LinkedIn. Os anúncios rodam com frequência e segmentação para alcançar o comitê inteiro, nos dois tiers e em todas as etapas. É lista mais campanha mantida por Marketing, não um workflow.",
 };
-
-export const buildConventions: string[] = [
-  "Objeto de inscrição = Empresa.",
-  "Responsável = proprietário da empresa. No Tier 1, priorizar o proprietário do negócio.",
-  "Tipos de task no HubSpot = Ligação, E-mail, Tarefa. LinkedIn e WhatsApp entram como Tarefa com prefixo no título.",
-  "Nome do workflow = [ABM][<tier-etapa>] <nome> · Score <faixa>.",
-  "Atrasos em dias úteis. D0 = dia da entrada.",
-  "Reinscrição desligada nos movimentos (MOV). Registrar sempre toda atividade.",
-];
-
-export const buildChecklist: ChecklistItem[] = [
-  { id: "chk-icp", group: "Fundação", label: "Popular Ideal Customer Profile Tier em todas as Target Accounts" },
-  { id: "chk-abmstatus", group: "Fundação", label: "Popular Status ABM (ativa como padrão de entrada)" },
-  { id: "chk-scores", group: "Fundação", label: "Confirmar as duas propriedades de score publicadas" },
-  { id: "chk-resultado", group: "Fundação", label: "Criar Resultado da reunião ABM" },
-  { id: "chk-buyingrole", group: "Fundação", label: "Garantir Buying Role no comitê" },
-  { id: "chk-alwayson", group: "Fundação", label: "Criar a lista always-on e sincronizar com o LinkedIn" },
-  { id: "chk-t20", group: "Workflows (ordem)", label: "T2-0 Nutrição" },
-  { id: "chk-t21", group: "Workflows (ordem)", label: "T2-1 Reconexão leve" },
-  { id: "chk-t22", group: "Workflows (ordem)", label: "T2-2 Observação e valor" },
-  { id: "chk-t23", group: "Workflows (ordem)", label: "T2-3 Abordagem p/ reunião" },
-  { id: "chk-movpromo", group: "Workflows (ordem)", label: "MOV Promoção T2→T1" },
-  { id: "chk-t11", group: "Workflows (ordem)", label: "T1-1 Ativação do comitê" },
-  { id: "chk-t12", group: "Workflows (ordem)", label: "T1-2 Reengajamento" },
-  { id: "chk-t13", group: "Workflows (ordem)", label: "T1-3 Fechamento BANT" },
-  { id: "chk-movsaida", group: "Workflows (ordem)", label: "MOV Saída do Tier 1" },
-  { id: "chk-teste", group: "Workflows (ordem)", label: "Testar cada banda com uma conta de teste" },
-];

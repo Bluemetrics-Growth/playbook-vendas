@@ -23,7 +23,7 @@ export const workflows: Workflow[] = [
     cancelWhen:
       "Score de Abordagem > 39 · OU ICP muda para Tier 1 ou Tier 3 · OU Status ABM sai de ativa (dormente, cliente, perdida_reciclar, arquivada, perdida_arquivar)",
     summary:
-      "Nutrição automática de baixa intensidade enquanto a conta segue Tier 2, com score ≤ 39 e status ABM ativa. A camada always-on trabalha até o primeiro sinal, e checkpoints de 30, 60 e 90 dias úteis revisam se ainda faz sentido manter a conta na esteira.",
+      "Nutrição automática de baixa intensidade enquanto a conta segue Tier 2, com score ≤ 39 e status ABM ativa. A comunicação de marketing trabalha até o primeiro sinal, e checkpoints de 30, 60 e 90 dias úteis revisam se ainda faz sentido manter a conta na esteira.",
     tasks: [
       {
         id: "T2-0-1",
@@ -37,7 +37,7 @@ export const workflows: Workflow[] = [
         id: "T2-0-2",
         day: "D0",
         channel: "automação",
-        action: "Garantir Buying Roles na lista always-on de ads.",
+        action: "Garantir Buying Roles na lista de comunicação de marketing (ads).",
         script:
           "Confirmar que os contatos com Buying Role da conta estão na matched audience de LinkedIn Ads.",
       },
@@ -281,7 +281,7 @@ export const workflows: Workflow[] = [
         id: "MOV-PROMO-3",
         day: "D0",
         channel: "automação",
-        action: "Remover das nutrições de Tier 2, manter o air cover.",
+        action: "Remover das nutrições de Tier 2, manter a comunicação de marketing.",
       },
     ],
   },
@@ -315,7 +315,7 @@ export const workflows: Workflow[] = [
         priority: "Alta",
         action: "Expansão de comitê: identificar contatos faltantes, marcar Buying Role.",
         script:
-          "Mapear decisor, influenciador, usuário e bloqueador. Marcar Buying Role em cada contato e adicionar os que faltam ao deal e ao air cover.",
+          "Mapear decisor, influenciador, usuário e bloqueador. Marcar Buying Role em cada contato e adicionar os que faltam ao deal e à comunicação de marketing.",
       },
       {
         id: "T1-1-3",
@@ -378,7 +378,7 @@ export const workflows: Workflow[] = [
         day: "D0",
         channel: "TAREFA",
         priority: "Média",
-        action: "(Marketing) Recolocar o comitê na nutrição por dor e no air cover reforçado.",
+        action: "(Marketing) Recolocar o comitê na nutrição por dor e reforçar a comunicação de marketing.",
       },
       {
         id: "T1-2-3",
@@ -411,7 +411,7 @@ export const workflows: Workflow[] = [
         id: "T1-3-0",
         day: "D0",
         channel: "automação",
-        action: "Encerrar prospecção de marketing, manter só o air cover.",
+        action: "Encerrar prospecção de marketing, manter só a comunicação de marca.",
       },
       {
         id: "T1-3-1",
@@ -456,7 +456,7 @@ export const workflows: Workflow[] = [
         priority: "Alta",
         action: "BANT · Timing",
         script:
-          'Gancho: "Quando conseguimos um retorno? O que muda até lá?" Timing empurra: follow-up datado, manter air cover, registrar para o score não cair.',
+          'Gancho: "Quando conseguimos um retorno? O que muda até lá?" Timing empurra: follow-up datado, manter a comunicação de marca, registrar para o score não cair.',
       },
       {
         id: "T1-3-6",
