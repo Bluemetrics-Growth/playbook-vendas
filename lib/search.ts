@@ -38,13 +38,19 @@ export function buildSearchIndex(): SearchItem[] {
     });
 
     for (const t of w.tasks) {
+      const b = t.brief;
+      const briefText = b
+        ? [b.objetivo, b.assunto, b.estrutura, b.perguntaGancho, b.comoAgir, b.personalizacao, ...(b.conteudo ?? []), ...(b.evite ?? [])]
+            .filter(Boolean)
+            .join(" ")
+        : "";
       items.push({
         id: `task-${t.id}`,
         kind: "task",
         title: `${t.id} · ${t.action}`,
         subtitle: `${w.name} · ${t.day} · ${t.channel}`,
         href: `/abm/esteiras/${w.id}#${t.id}`,
-        keywords: slugify(`${t.id} ${t.action} ${t.channel} ${t.day} ${w.id} ${w.name} ${t.script ?? ""}`),
+        keywords: slugify(`${t.id} ${t.action} ${t.channel} ${t.day} ${w.id} ${w.name} ${t.script ?? ""} ${briefText}`),
       });
     }
   }
