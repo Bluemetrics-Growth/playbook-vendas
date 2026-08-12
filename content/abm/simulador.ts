@@ -1,56 +1,16 @@
-// Tópico 3 — Simulador de Score. Conteúdo operacional do "como ler o score".
-// A decisão não nasce de um eixo conceitual: nasce da combinação entre
-// tier/ICP, score do tier e Status ABM. Espelho da lógica atual do roteador
-// e do workflow [ABM][T2-0] Nutrição com checkpoints de saída.
+// Leitura de Score. Como o score vira decisão, com exemplos reais.
+// A decisão nasce da combinação entre tier/ICP, score do tier e Status ABM.
+// Espelho da lógica do roteador e do workflow
+// [ABM][T2-0] Nutrição com checkpoints de saída.
 
-export interface Signal {
-  id: string;
-  icon: string; // nome de icone lucide-react
-  label: string;
-  question: string;
-  property: string;
-  detail: string;
-}
-
-// Seção 2 — Os 3 sinais que importam.
-export const readingSignals: Signal[] = [
-  {
-    id: "tier",
-    icon: "Layers",
-    label: "Tier / ICP",
-    question: "Quem a conta é?",
-    property: "Ideal Customer Profile Tier",
-    detail:
-      "Diz o peso estratégico e qual motor roteia a conta. Tier 2 é relacionamento, Tier 1 é oportunidade com deal aberto.",
-  },
-  {
-    id: "score",
-    icon: "Gauge",
-    label: "Score do tier",
-    question: "Quão aquecida ela está?",
-    property: "Score de Abordagem (Tier 2) ou Score de Prioridade (Tier 1)",
-    detail:
-      "Diz o nível de sinal. Cada tier tem o seu score. No Tier 2 você lê o Score de Abordagem, no Tier 1 o Score de Prioridade.",
-  },
-  {
-    id: "status",
-    icon: "CircleDot",
-    label: "Status ABM",
-    question: "Ela ainda segue ativa no processo?",
-    property: "Status ABM",
-    detail:
-      "Diz o estado operacional. Só ativa permite permanência na esteira. Dormente, cliente, perdida ou arquivada encerram a permanência.",
-  },
-];
-
-// Copy de abertura e regra central (Seção 1 e explicação central).
+// Copy de abertura e regra central.
 export const simuladorCopy = {
   teaches:
-    "Este tópico ensina a transformar score em decisão operacional. Em vez de decorar uma matriz teórica, você vai ler a conta com base nos três sinais que realmente movem o processo: tier, score e Status ABM. É essa leitura combinada que orienta prioridade, abordagem e permanência na esteira.",
+    "Aqui o score deixa de ser número e vira decisão. Você já viu os três sinais no Modelo; nesta tela usamos eles em exemplos reais para responder uma pergunta só: essa conta continua, avança ou sai?",
   central:
-    "O score nunca deve ser lido sozinho. No ABM da BlueMetrics, a decisão sempre depende da combinação entre o tier da conta, o score aplicável e o Status ABM atual. Score sozinho não roteia a conta: ele ganha significado dentro do contexto de tier e status.",
+    "O score nunca é lido sozinho. A decisão sempre depende da combinação entre o tier da conta, o score aplicável e o Status ABM atual. Score sozinho não roteia a conta: ele ganha significado dentro do contexto de tier e status.",
   consequence:
-    "Prioridade e abordagem não são eixos que você escolhe. São consequência da leitura. O tier dá o peso estratégico, o score dá o aquecimento, o status diz se a conta segue no jogo. A combinação dos três é que define a prioridade prática e a abordagem recomendada.",
+    "Prioridade e abordagem não são coisas que você escolhe. São consequência da leitura. O tier dá o peso, o score dá o aquecimento, o status diz se a conta segue no jogo.",
 };
 
 // Seção 3 — Como interpretar a combinação (leitura por faixa e desfecho).
@@ -99,7 +59,7 @@ export const t20Example = {
       "Status ABM = ativa",
     ],
     note:
-      "As três condições valem ao mesmo tempo. Enquanto seguirem verdadeiras, a conta continua em nutrição de baixa intensidade e só o always-on trabalha.",
+      "As três condições valem ao mesmo tempo. Enquanto seguirem verdadeiras, a conta continua em nutrição de baixa intensidade e só a comunicação de marketing trabalha.",
   },
   leave: {
     title: "Quando a conta sai",
@@ -146,19 +106,10 @@ export const t20Checkpoints: Checkpoint[] = [
 export const checkpointsCopy =
   "Permanecer em nutrição não significa inércia. Se a conta seguir elegível em T2-0, o processo cria checkpoints em 30, 60 e 90 dias úteis para confirmar se ainda faz sentido manter aquecimento, dar um toque leve ou encerrar a permanência nessa esteira.";
 
-// Seção 6 — Erros comuns de leitura.
+// Erros comuns de leitura.
 export const readingMistakes: string[] = [
   "Olhar só o score e ignorar tier e status.",
   "Ignorar a mudança de tier: uma conta que virou Tier 1 ou Tier 3 já não se lê pela régua da T2-0.",
   "Ignorar o Status ABM: score baixo com status fora de ativa não é nutrição, é saída.",
   "Assumir que toda conta com score maior vai para o mesmo destino. O destino depende da leitura combinada.",
-];
-
-// Seção 7 — Checkpoint final (validação operacional do tópico).
-export const validationQuestions: string[] = [
-  "Em qual tier essa conta está?",
-  "Qual score eu devo olhar para esta conta?",
-  "O score indica nutrição, avanço ou saída?",
-  "O Status ABM ainda permite permanência na esteira?",
-  "Qual é a próxima ação operacional esperada?",
 ];

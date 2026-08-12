@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Check, X, AlertTriangle, HelpCircle } from "lucide-react";
-import { Icon } from "@/components/ui/Icon";
 import { kindMeta } from "@/components/ui/BandBadge";
 import {
-  readingSignals,
   readingTable,
   t20Example,
   t20Checkpoints,
   readingMistakes,
-  validationQuestions,
-  simuladorCopy,
   checkpointsCopy,
 } from "@/content/abm/simulador";
 
@@ -23,41 +19,14 @@ function SectionTitle({ kicker, title, intro }: { kicker: string; title: string;
   );
 }
 
-/** Seção 2 — Os 3 sinais que importam. */
-export function ThreeSignals() {
-  return (
-    <section className="mt-12">
-      <SectionTitle
-        kicker="Os 3 sinais"
-        title="O que você lê antes de decidir"
-        intro="O score não decide sozinho. A decisão nasce da combinação de três sinais, todos propriedades reais da conta no HubSpot."
-      />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {readingSignals.map((s) => (
-          <div key={s.id} className="surface-card flex flex-col gap-2 p-5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-s bg-primary-soft text-primary">
-              <Icon name={s.icon} size={18} />
-            </span>
-            <span className="font-display text-h4 font-semibold text-fg">{s.label}</span>
-            <span className="text-body-sm font-medium text-primary">{s.question}</span>
-            <span className="text-body-sm text-fg-muted">{s.detail}</span>
-            <span className="mono mt-1 text-[12px] text-fg-hint">{s.property}</span>
-          </div>
-        ))}
-      </div>
-      <p className="mt-4 max-w-text text-body-sm text-fg-muted">{simuladorCopy.consequence}</p>
-    </section>
-  );
-}
-
-/** Seção 3 — Como interpretar a combinação. */
+/** Como interpretar a combinação. */
 export function ReadingTable() {
   return (
     <section className="mt-12">
       <SectionTitle
-        kicker="Como interpretar"
-        title="Da leitura à ação"
-        intro="Quatro cenários objetivos de permanência e saída. A situação combina os três sinais; a ação é o que o roteador e a cadência esperam."
+        kicker="Da leitura à ação"
+        title="Quatro cenários, quatro desfechos"
+        intro="A situação combina os três sinais. A leitura diz o que ela significa. A ação é o que o roteador e a cadência esperam."
       />
       <div className="flex flex-col gap-3">
         {readingTable.map((r, i) => {
@@ -89,24 +58,20 @@ export function ReadingTable() {
       <p className="mt-4 flex items-start gap-2 rounded-m border border-border bg-bg-soft px-4 py-3 text-[13px] text-fg-muted">
         <HelpCircle size={16} className="mt-0.5 flex-none text-primary" />
         <span>
-          Onde o próximo destino ainda não está validado em automação, o playbook usa linguagem neutra:
-          a conta segue para nova avaliação no roteador ou passa a outra lógica operacional. Não se
-          promete um destino automático sem validação.
+          Onde o próximo destino ainda não está fechado em automação, usamos linguagem neutra: a conta segue
+          para nova avaliação no roteador ou passa a outra lógica. Não prometemos um destino automático sem
+          validação.
         </span>
       </p>
     </section>
   );
 }
 
-/** Seção 4 — Exemplo real: T2-0. */
+/** Exemplo real: T2-0. */
 export function T20Example() {
   return (
     <section className="mt-12">
-      <SectionTitle
-        kicker="Exemplo real"
-        title="A esteira T2-0 na prática"
-        intro={t20Example.copy}
-      />
+      <SectionTitle kicker="Exemplo real" title="A esteira T2-0 na prática" intro={t20Example.copy} />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* Permanência */}
         <div className="surface-card flex flex-col gap-3 p-5" style={{ borderTop: "3px solid var(--band-nurture)" }}>
@@ -147,7 +112,7 @@ export function T20Example() {
   );
 }
 
-/** Seção 5 — O que acontece com o tempo (checkpoints). */
+/** O que acontece com o tempo (checkpoints). */
 export function Checkpoints() {
   return (
     <section className="mt-12">
@@ -169,7 +134,7 @@ export function Checkpoints() {
   );
 }
 
-/** Seção 6 — Erros comuns de leitura. */
+/** Erros comuns de leitura. */
 export function ReadingMistakes() {
   return (
     <section className="mt-12">
@@ -185,29 +150,6 @@ export function ReadingMistakes() {
           </li>
         ))}
       </ul>
-    </section>
-  );
-}
-
-/** Seção 7 — Checkpoint final (validação operacional). */
-export function ValidationCheckpoint() {
-  return (
-    <section className="mt-12">
-      <SectionTitle
-        kicker="Checkpoint final"
-        title="Cinco perguntas para fechar a leitura"
-        intro="Se você consegue responder às cinco, transformou score em decisão. É esse o papel do operador: ler a combinação de sinais e saber a próxima ação."
-      />
-      <ol className="flex flex-col gap-2">
-        {validationQuestions.map((q, i) => (
-          <li key={q} className="surface-card flex items-center gap-3 p-4">
-            <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-primary font-display text-[13px] font-semibold text-white">
-              {i + 1}
-            </span>
-            <span className="text-body-sm text-fg">{q}</span>
-          </li>
-        ))}
-      </ol>
     </section>
   );
 }

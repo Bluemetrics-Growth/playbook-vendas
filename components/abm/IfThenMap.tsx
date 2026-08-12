@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Zap } from "lucide-react";
 import { ifThenRules } from "@/content/abm/orchestration";
 
-const filters = ["Todos", "Always-on", "Tier 2", "Movimento", "Tier 1", "SLA 24h"] as const;
+const filters = ["Todos", "Marketing", "Tier 2", "Movimento", "Tier 1", "SLA 24h"] as const;
 type Filter = (typeof filters)[number];
 
 export function IfThenMap() {

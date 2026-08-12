@@ -1,47 +1,43 @@
-// Narrativa das telas (prosa separada da UI). Fonte: PRD Seções 9.1, 9.2 e Apêndice A.1.
+// Narrativa das telas (prosa separada da UI). Playbook de operação: o motion
+// já roda no HubSpot. Sem eixo de esforço A/B/C e sem jargão: a presença
+// constante é "comunicação de marketing".
 
 export interface Principle {
   id: string;
   title: string;
   short: string;
-  example: string;
 }
 
 export const tesePrinciples: Principle[] = [
   {
     id: "p1",
     title: "Conta como unidade",
-    short: "A unidade de trabalho é a conta, não o lead solto.",
-    example:
-      "Na BlueMetrics, medimos penetração de comitê e pipeline por conta-alvo, não volume de leads avulsos.",
+    short:
+      "A unidade de trabalho é a conta e o seu comitê, não o lead solto. Queremos que todos os decisores e influenciadores conheçam a BlueMetrics, não uma pessoa só.",
   },
   {
     id: "p2",
-    title: "Esforço proporcional, sinal governa a hora",
-    short: "O quanto de esforço segue o A/B/C. O quando segue o sinal.",
-    example:
-      "Uma conta Tier 2 só recebe o toque humano do executivo quando o Score de Abordagem indica prontidão. Abaixo disso, só o always-on trabalha.",
+    title: "Presença constante, abordagem no momento certo",
+    short:
+      "O marketing mantém a comunicação sempre presente no comitê, com frequência e segmentação. O toque humano do executivo entra quando o score do tier indica prontidão. Cada tier tem o seu score.",
   },
   {
     id: "p3",
-    title: "Sales e marketing co-donos",
-    short: "Um único motion, dois donos, mesma régua e ritual.",
-    example:
-      "O KPI Contract é co-assinado. A revisão semanal de contas junta sales e marketing na mesma mesa.",
+    title: "Marketing e comercial, co-donos",
+    short:
+      "Um único motion, dois donos, a mesma régua e o mesmo ritual. Marketing e comercial olham as mesmas contas juntos e dividem o mesmo resultado.",
   },
   {
     id: "p4",
     title: "Orquestração em sequência",
-    short: "Paid aquece, toque humano dá lift, email amplifica, evento captura intenção.",
-    example:
-      "Os ads always-on preparam o comitê antes de o executivo entrar. O canal certo na hora certa.",
+    short:
+      "Os anúncios preparam o comitê e mantêm a marca presente, o toque humano dá o lift, o email amplifica e o evento captura intenção. O canal certo na hora certa.",
   },
   {
     id: "p5",
     title: "Medir por conta e pipeline",
-    short: "Aposentar o MQL. Medir engajamento de conta e pipeline criado, influenciado e acelerado.",
-    example:
-      "A meta do piloto é 5 a 8 reuniões com contas-alvo e aceleração de deals, não custo por lead.",
+    short:
+      "Medimos engajamento de conta, penetração de comitê e pipeline criado, influenciado e acelerado. A leitura é sempre por conta-alvo, não por lead avulso.",
   },
 ];
 
@@ -54,8 +50,8 @@ export const teseContrast = {
     subtitle: "Demand gen tradicional",
     points: [
       "Volume: muitos leads, pouca qualificação.",
-      "Métrica: número de MQLs e custo por lead.",
       "Mensagem genérica para um público amplo.",
+      "Foco em um contato, não no comitê.",
       "Marketing entrega leads, vendas reclama da qualidade.",
     ],
   },
@@ -64,44 +60,71 @@ export const teseContrast = {
     subtitle: "ABM",
     points: [
       "Foco: contas-alvo com fit garantido.",
-      "Métrica: penetração de conta e pipeline.",
       "Mensagem por conta, ancorada na dor e no sinal.",
-      "Sales e marketing co-donos do mesmo resultado.",
+      "Comitê inteiro alcançado com frequência e segmentação.",
+      "Marketing e comercial co-donos do mesmo resultado.",
     ],
   },
 };
 
+// Modelo: quem a conta é (tier/ICP), quão aquecida está (score do tier) e se
+// segue no jogo (status ABM). O movimento acontece por score e status.
 export const modeloTiers = [
   {
     tier: "Tier 2",
     kicker: "relacionamento",
     who:
-      "Rede dos executivos. Empresas com fit (ICP) e cargo relevante, que o executivo já conhece, mas que ainda não conhecem a BlueMetrics. Fit garantido na entrada (não é público frio).",
-    score: "Score de Abordagem (prontidão)",
+      "Rede dos executivos. Empresas com fit (ICP) e cargo relevante que o executivo já conhece, mas que ainda não conhecem a BlueMetrics. Fit garantido na entrada, não é público frio.",
+    score: "Score de Abordagem (prontidão por comportamento)",
+    status: "Ativa enquanto está em relacionamento. Sai para dormente, cliente, perdida ou arquivada.",
     bands: "0-39 nutrição · 40-59 reconexão leve · 60-74 observação · 75+ gatilho de reunião",
+    focus: "Fazer o comitê conhecer a marca e abrir a primeira conversa no sinal certo.",
     deal: "Sem deal ainda. Vira Tier 1 quando a reunião tem aderência.",
   },
   {
     tier: "Tier 1",
     kicker: "oportunidade",
-    who: "Conta com deal aberto no Pipeline Pibernat e orçamento emitido. Vendas é dono do deal.",
+    who: "Conta com deal aberto no Pipeline Pibernat e orçamento emitido. Comercial é dono do deal.",
     score: "Score de Prioridade (prioridade e saúde do deal)",
-    bands: "0-59 reengajamento · 60-79 campo de nutrição · 80+ fechamento",
+    status: "Segue ativa com o deal aberto. O deal fechado é que encerra o Tier 1.",
+    bands: "0-59 reengajamento · 60-79 ativação do comitê · 80+ fechamento",
+    focus: "Penetrar o comitê inteiro e sustentar a prioridade do deal até o fechamento.",
     deal: "Deal aberto garante a permanência. Nunca é rebaixado. Só sai quando o deal fecha.",
   },
 ];
 
-export const abcAxis = [
-  { letter: "A", name: "Strategic 1:1", goal: "Fechar", detail: "Esforço máximo, uma conta por vez." },
-  { letter: "B", name: "Lite 1:poucos", goal: "Avançar", detail: "Esforço médio, um punhado de contas parecidas." },
-  { letter: "C", name: "Programmatic 1:muitos", goal: "Nutrir", detail: "Esforço leve e escalável, muitas contas." },
+export const modeloSignals = [
+  {
+    id: "tier",
+    icon: "Layers",
+    title: "Tier / ICP",
+    question: "Quem a conta é?",
+    detail: "O peso estratégico e o motor que roteia a conta. Tier 2 é relacionamento, Tier 1 é oportunidade com deal aberto.",
+  },
+  {
+    id: "score",
+    icon: "Gauge",
+    title: "Score do tier",
+    question: "Quão aquecida ela está?",
+    detail: "Cada tier tem o seu score. No Tier 2 lemos o Score de Abordagem, no Tier 1 o Score de Prioridade. É o score que move a conta entre bandas.",
+  },
+  {
+    id: "status",
+    icon: "CircleDot",
+    title: "Status ABM",
+    question: "Ela segue ativa no processo?",
+    detail: "O estado operacional da conta. Só ativa permite permanência na esteira. Dormente, cliente, perdida ou arquivada encerram a permanência.",
+  },
 ];
+
+export const modeloCommittee =
+  "Não trabalhamos um contato, trabalhamos o comitê. A meta é que todos os decisores e influenciadores da conta já conheçam a BlueMetrics antes da primeira conversa. Por isso os anúncios rodam com frequência e segmentação para alcançar as pessoas-chave da empresa, enquanto o score diz a hora do toque humano.";
 
 export const tier2Decisions = [
   {
-    threshold: "50",
-    title: "Entrada leve do executivo",
-    detail: "Toque humano suave, sem pitch. Abaixo de 50, só a camada always-on trabalha.",
+    threshold: "40-74",
+    title: "Aquecimento e reconexão",
+    detail: "O executivo faz toques leves, sem pitch. O marketing segue presente no comitê. A conta sobe de banda conforme dá sinais.",
   },
   {
     threshold: "75",

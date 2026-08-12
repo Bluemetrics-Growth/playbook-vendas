@@ -10,7 +10,7 @@ export default function GlossarioPage() {
       <PageHeader
         eyebrow="ABM · Glossário"
         title="Vocabulário do ABM"
-        intro="Elimina a confusão de termos. Cada definição leva à tela onde o conceito aparece em ação."
+        intro="Elimina a confusão de termos. Uma definição direta para cada conceito do motion."
       />
       <GlossaryList />
     </SectionShell>

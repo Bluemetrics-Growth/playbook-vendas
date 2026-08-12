@@ -3,23 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Check, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { abmSections } from "@/content/abm/sections";
-import { useProgress } from "@/lib/progress";
 import { Icon } from "@/components/ui/Icon";
 import { BrandLogo } from "./BrandLogo";
-import { ModeToggle } from "./ModeToggle";
-import { ProgressBar } from "./ProgressBar";
 import { SearchButton } from "./CommandPalette";
 
 const groups = ["Tese", "Modelo", "Operação", "Gestão"] as const;
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
-  const seen = useProgress((s) => s.seen);
-  const mode = useProgress((s) => s.mode);
-  const hydrated = useProgress((s) => s.hydrated);
-  const showChecks = !hydrated || mode === "treinar";
 
   return (
     <nav className="flex flex-col gap-5">
@@ -30,7 +23,6 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
             <span className="eyebrow px-2 text-[11px]">{group}</span>
             {items.map((s) => {
               const active = pathname === s.href;
-              const isSeen = !!seen[s.slug];
               return (
                 <Link
                   key={s.slug}
@@ -44,9 +36,6 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                 >
                   <Icon name={s.icon} size={16} strokeWidth={1.75} className="flex-none" />
                   <span className="flex-1 truncate">{s.title}</span>
-                  {showChecks && isSeen ? (
-                    <Check size={14} className="flex-none text-success" aria-label="visto" />
-                  ) : null}
                 </Link>
               );
             })}
@@ -58,15 +47,11 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
-  const mode = useProgress((s) => s.mode);
-  const hydrated = useProgress((s) => s.hydrated);
   return (
     <div className="flex h-full flex-col gap-5">
       <div className="flex flex-col gap-4">
         <BrandLogo />
-        <ModeToggle />
         <SearchButton className="w-full justify-start" />
-        {(!hydrated || mode === "treinar") ? <ProgressBar /> : null}
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
         <NavList onNavigate={onNavigate} />

@@ -118,16 +118,10 @@ export interface Property {
   usage: string;
 }
 
-export interface ChecklistItem {
-  id: string;
-  label: string;
-  group: string;
-}
-
 // ---------------------------------------------------------------- Orquestracao
 export interface IfThenRule {
   id: string;
-  tier: WorkflowGroup | "Always-on";
+  tier: WorkflowGroup | "Marketing";
   condition: string; // "SE ..."
   action: string; // "ENTAO ..."
   sla?: string;
@@ -141,23 +135,9 @@ export interface OrchestrationStage {
 }
 
 // ---------------------------------------------------------------- Medicao
-export interface MeasureRow {
-  stop: string;
-  start: string;
-}
-
 export interface Metric {
   label: string;
   detail?: string;
-}
-
-// ---------------------------------------------------------------- Piloto
-export interface PilotPhase {
-  id: string;
-  phase: string;
-  weeks: string;
-  name: string;
-  activities: string[];
 }
 
 // ---------------------------------------------------------------- Glossario
