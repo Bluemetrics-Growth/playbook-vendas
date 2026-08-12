@@ -15,7 +15,7 @@ interface BrandLogoProps {
 export function BrandLogo({
   variant = "blue",
   withSignature = true,
-  href = "/",
+  href = "/abm",
   className = "",
 }: BrandLogoProps) {
   const onDark = variant === "white";

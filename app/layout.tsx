@@ -5,11 +5,11 @@ import { Providers } from "@/components/shell/Providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "bluemetrics Playbook",
-    template: "%s · bluemetrics Playbook",
+    default: "Playbook ABM · bluemetrics",
+    template: "%s · Playbook ABM bluemetrics",
   },
   description:
-    "Hub de playbooks comerciais da BlueMetrics. Treine e consulte o modelo de ABM: dois tiers, dois scores, esteiras de cadência e medição.",
+    "Playbook de ABM da BlueMetrics. Treine e consulte o modelo: dois tiers, dois scores, esteiras de cadência e medição por conta.",
   icons: {
     icon: "/brand/logo-blue-symbol.png",
   },
