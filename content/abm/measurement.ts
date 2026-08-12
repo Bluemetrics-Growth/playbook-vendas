@@ -16,14 +16,6 @@ export const progressMetrics: Metric[] = [
   { label: "Cobertura de pipeline" },
 ];
 
-export const mqa = {
-  title: "MQA (Marketing Qualified Account)",
-  body:
-    "A conta qualificada por marketing, disparada pelos gatilhos de banda dos scores: no Tier 2, cruzar 75 qualifica para abordagem (vira SQL, SLA 24h); no Tier 1, cruzar 80 dispara a esteira de fechamento.",
-};
-
-export const threeRs = ["Relacionamento", "Reputação", "Receita"];
-
 // O acordo entre marketing e comercial (co-donos do mesmo resultado).
 export const alignment: { label: string; detail: string }[] = [
   { label: "ICP e tiers", detail: "Quem é conta-alvo, como se define cada tier e o modelo de score." },

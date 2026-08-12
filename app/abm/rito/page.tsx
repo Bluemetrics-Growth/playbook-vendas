@@ -1,8 +1,7 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionShell } from "@/components/abm/SectionShell";
-import { ritoIntro, ritoAgenda, ritoOwnership, ritoCadence } from "@/content/abm/rito";
+import { ritoIntro, ritoAgenda, ritoCadence } from "@/content/abm/rito";
 import { Icon } from "@/components/ui/Icon";
-import { UserCheck } from "lucide-react";
 
 export const metadata = { title: "Rito Semanal" };
 
@@ -26,24 +25,6 @@ export default function RitoPage() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Dono e disciplina */}
-      <section className="mb-10">
-        <div className="surface-card p-5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-m bg-primary-soft text-primary">
-            <UserCheck size={20} />
-          </span>
-          <h3 className="mt-3 font-display text-h4 font-semibold">Dono por conta e disciplina</h3>
-          <ul className="mt-2 flex flex-col gap-1.5">
-            {ritoOwnership.map((r) => (
-              <li key={r} className="flex items-start gap-2 text-body-sm text-fg-muted">
-                <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-primary" />
-                {r}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 

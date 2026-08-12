@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Users } from "lucide-react";
-import { modeloTiers, modeloSignals, modeloCommittee, tier2Decisions } from "@/content/abm/prose";
+import { Users } from "lucide-react";
+import { modeloTiers, modeloSignals, modeloCommittee } from "@/content/abm/prose";
 import { Icon } from "@/components/ui/Icon";
 
 export function TierExplorer() {
@@ -16,8 +16,8 @@ export function TierExplorer() {
         <div className="mb-3 flex flex-col gap-1">
           <span className="eyebrow">Os 3 sinais</span>
           <p className="max-w-text text-body-sm text-fg-muted">
-            A conta se move por três sinais, todos propriedades reais no HubSpot. Nada de matriz teórica: é isso
-            que decide a leitura.
+            A conta se move por três sinais, todos propriedades reais no HubSpot. É isso que decide a leitura,
+            sem matriz teórica.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -27,7 +27,7 @@ export function TierExplorer() {
                 <Icon name={s.icon} size={18} />
               </span>
               <span className="font-display text-h4 font-semibold text-fg">{s.title}</span>
-              <span className="text-body-sm font-medium text-primary">{s.question}</span>
+              <span className="text-body-sm font-medium text-primary">{s.lead}</span>
               <span className="text-[13px] text-fg-muted">{s.detail}</span>
             </div>
           ))}
@@ -81,37 +81,23 @@ export function TierExplorer() {
         </div>
       </div>
 
-      {/* Foco no comitê */}
-      <div className="surface-card flex items-start gap-3 p-5">
-        <span className="flex h-10 w-10 flex-none items-center justify-center rounded-m bg-primary-soft text-primary">
-          <Users size={20} />
-        </span>
-        <div>
-          <h3 className="font-display text-h4 font-semibold">Trabalhamos o comitê, não um contato</h3>
-          <p className="mt-1 text-body-sm text-fg-muted">{modeloCommittee}</p>
-        </div>
-      </div>
-
-      {/* Tier 1 nunca rebaixado */}
-      <div className="flex items-center gap-3 rounded-m border border-border bg-bg-soft px-4 py-3 text-body-sm">
-        <Lock size={16} className="flex-none text-primary" />
-        <span className="text-fg-muted">
-          <strong className="text-fg">Tier 1 nunca é rebaixado a Tier 2.</strong> O deal aberto mantém a conta no
-          Tier 1. O score move entre bandas, sem trocar o tier. A conta só sai quando o deal fecha.
-        </span>
-      </div>
-
-      {/* Decisões do Tier 2 */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {tier2Decisions.map((d) => (
-          <div key={d.threshold} className="surface-card flex items-start gap-4 p-5">
-            <span className="font-display text-h2 font-semibold leading-none text-primary">{d.threshold}</span>
-            <span>
-              <span className="block font-medium text-fg">{d.title}</span>
-              <span className="block text-body-sm text-fg-muted">{d.detail}</span>
+      {/* Foco no comitê (nos dois tiers) */}
+      <div className="surface-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-m bg-primary-soft text-primary">
+              <Users size={20} />
             </span>
+            <h3 className="font-display text-h4 font-semibold">{modeloCommittee.title}</h3>
           </div>
-        ))}
+          <p className="mt-2 text-body-sm text-fg-muted">{modeloCommittee.body}</p>
+        </div>
+        <div className="flex flex-none flex-col items-start gap-1 rounded-l border border-border bg-bg-soft p-4 sm:w-56">
+          <span className="font-display text-display-m font-semibold leading-none text-primary">{modeloCommittee.stat.value}</span>
+          <span className="text-body-sm font-medium text-fg">{modeloCommittee.stat.label}</span>
+          <span className="mono text-[11px] uppercase tracking-wide text-fg-hint">Fonte: {modeloCommittee.stat.source}</span>
+          <span className="mt-1 text-[12px] text-fg-muted">{modeloCommittee.stat.note}</span>
+        </div>
       </div>
     </div>
   );

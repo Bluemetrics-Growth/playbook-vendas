@@ -11,7 +11,7 @@ export default function EsteirasPage() {
       <PageHeader
         eyebrow="ABM · Esteiras"
         title="Esteiras e cadências"
-        intro="As esteiras já estão criadas e rodando no HubSpot. Aqui você vê o que cada uma dispara, quem age e a sequência de tasks com roteiros prontos para copiar. Filtre por tier para separar relacionamento (Tier 2) de oportunidade (Tier 1)."
+        intro="Cada esteira tem o seu gatilho, o seu dono e a sequência de tasks com roteiros prontos para copiar. Filtre por tier para separar relacionamento (Tier 2) de oportunidade (Tier 1)."
       />
 
       {/* Como as esteiras chegam até você */}
@@ -30,8 +30,8 @@ export default function EsteirasPage() {
             <Megaphone size={18} />
           </span>
           <p className="text-body-sm text-fg-muted">
-            <strong className="text-fg">Marketing trabalha por baixo.</strong> Na nutrição, o marketing sustenta a
-            comunicação no comitê com anúncios segmentados e emails estratégicos por conta, até a conta dar o primeiro sinal.
+            <strong className="text-fg">Marketing prepara o terreno.</strong> Enquanto a conta aquece, o marketing faz
+            a marca ser reconhecida no comitê com anúncios segmentados e emails estratégicos por conta, até a conta dar o primeiro sinal.
           </p>
         </div>
       </div>

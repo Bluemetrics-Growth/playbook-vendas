@@ -1,7 +1,7 @@
 // Rito Semanal. A cadência de operação: marketing e comercial na mesma mesa.
 
 export const ritoIntro =
-  "O ABM já está no ar no HubSpot. O que sustenta o motion é o rito semanal: marketing e comercial na mesma mesa, olhando as contas, decidindo abordagens e ajustando o que precisa. Sem esse encontro, o processo roda no automático e perde o toque.";
+  "O rito semanal é onde marketing e comercial sentam na mesma mesa para definir as estratégias da semana e ajustar o processo. As contas se movem sozinhas pelo score, mas as decisões (para quem falar, com qual ângulo, o que otimizar) são tomadas aqui. É esse encontro que tira o ABM do automático e o mantém afiado.";
 
 export interface RitoBlock {
   id: string;
@@ -41,13 +41,6 @@ export const ritoAgenda: RitoBlock[] = [
     title: "Revisar e otimizar processos",
     detail: "O que travou na semana? Ajustar bandas, roteiros, propriedades e cadência. O processo é vivo, melhora toda semana.",
   },
-];
-
-export const ritoOwnership = [
-  "Cada conta tem um dono nomeado (o executivo dono da empresa no HubSpot).",
-  "As tarefas chegam como notificação para o dono: revisão, envio de email, toque.",
-  "O SLA de sinal quente é cobrado na revisão: 24h.",
-  "Toda atividade é registrada no HubSpot. No Tier 1, o registro é o que segura o score.",
 ];
 
 export const ritoCadence =

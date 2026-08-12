@@ -31,7 +31,7 @@ export function AbmHome() {
           </h1>
           <p className="mt-3 max-w-narrow text-body" style={{ color: "var(--fg-on-dark-2)" }}>
             Conta como unidade, dois tiers, dois scores, esteiras de cadência e mensuração por conta e pipeline.
-            O motion já roda no HubSpot. Este é o playbook de operação.
+            Este é o playbook de operação do ABM.
           </p>
         </div>
       </div>

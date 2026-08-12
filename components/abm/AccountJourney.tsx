@@ -118,7 +118,7 @@ export function AccountJourney() {
         <Megaphone size={16} className="mt-0.5 flex-none" style={{ color: "var(--bm-purple)" }} />
         <span>
           <strong className="text-fg">Marketing sustenta o comitê em todas as etapas.</strong> Os anúncios seguem
-          presentes com frequência e segmentação por baixo de toda a jornada, do primeiro toque ao fechamento. O
+          presentes com frequência e segmentação ao longo de toda a jornada, do primeiro contato ao fechamento. O
           Tier 1 nunca volta para Tier 2: o score move entre bandas, a saída só acontece no fechamento do deal.
         </span>
       </div>

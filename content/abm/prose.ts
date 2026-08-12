@@ -1,6 +1,6 @@
-// Narrativa das telas (prosa separada da UI). Playbook de operação: o motion
-// já roda no HubSpot. Sem eixo de esforço A/B/C e sem jargão: a presença
-// constante é "comunicação de marketing".
+// Narrativa das telas (prosa separada da UI). Playbook de operação do ABM.
+// Sem eixo de esforço A/B/C e sem jargão: a presença constante do marketing
+// é "comunicação de marketing".
 
 export interface Principle {
   id: string;
@@ -25,13 +25,13 @@ export const tesePrinciples: Principle[] = [
     id: "p3",
     title: "Marketing e comercial, co-donos",
     short:
-      "Um único motion, dois donos, a mesma régua e o mesmo ritual. Marketing e comercial olham as mesmas contas juntos e dividem o mesmo resultado.",
+      "Mesmo alvo, mesmo objetivo, mesma régua. Marketing e comercial perseguem as mesmas contas juntos e dividem o mesmo resultado, cada um com o seu papel.",
   },
   {
     id: "p4",
     title: "Orquestração em sequência",
     short:
-      "Os anúncios preparam o comitê e mantêm a marca presente, o toque humano dá o lift, o email amplifica e o evento captura intenção. O canal certo na hora certa.",
+      "Os anúncios fazem a marca ser reconhecida no comitê e preparam o terreno. O executivo de vendas conduz a conversa, com a sua abordagem, o seu tom e o seu relacionamento. O email reforça o valor e o evento captura intenção. O canal certo na hora certa.",
   },
   {
     id: "p5",
@@ -41,8 +41,8 @@ export const tesePrinciples: Principle[] = [
   },
 ];
 
-export const teseEconomics =
-  "A economia que puxa ABM: ticket alto, ciclo longo e comitê amplo. Quando poucos negócios movem a agulha e a decisão passa por várias pessoas, faz sentido concentrar esforço nas contas certas em vez de espalhar disparos.";
+export const teseModel =
+  "É por isso que o modelo trabalha a conta, e não o lead solto: dois tiers para separar relacionamento de oportunidade, um score para cada um e o status que diz onde a conta está. Concentrar esforço nas contas certas, com o comitê inteiro à vista, é o que faz o ABM valer a pena.";
 
 export const teseContrast = {
   net: {
@@ -98,39 +98,35 @@ export const modeloSignals = [
     id: "tier",
     icon: "Layers",
     title: "Tier / ICP",
-    question: "Quem a conta é?",
+    lead: "Diz quem a conta é.",
     detail: "O peso estratégico e o motor que roteia a conta. Tier 2 é relacionamento, Tier 1 é oportunidade com deal aberto.",
   },
   {
     id: "score",
     icon: "Gauge",
     title: "Score do tier",
-    question: "Quão aquecida ela está?",
+    lead: "Diz quão aquecida ela está.",
     detail: "Cada tier tem o seu score. No Tier 2 lemos o Score de Abordagem, no Tier 1 o Score de Prioridade. É o score que move a conta entre bandas.",
   },
   {
     id: "status",
     icon: "CircleDot",
     title: "Status ABM",
-    question: "Ela segue ativa no processo?",
-    detail: "O estado operacional da conta. Só ativa permite permanência na esteira. Dormente, cliente, perdida ou arquivada encerram a permanência.",
+    lead: "Diz em que estado a conta está.",
+    detail: "Ativa mantém a conta no processo. Dormente, cliente, perdida_reciclar, arquivada e perdida_arquivar encerram a permanência na esteira. É o status que separa uma conta em jogo de uma que saiu.",
   },
 ];
 
-export const modeloCommittee =
-  "Não trabalhamos um contato, trabalhamos o comitê. A meta é que todos os decisores e influenciadores da conta já conheçam a BlueMetrics antes da primeira conversa. Por isso os anúncios rodam com frequência e segmentação para alcançar as pessoas-chave da empresa, enquanto o score diz a hora do toque humano.";
-
-export const tier2Decisions = [
-  {
-    threshold: "40-74",
-    title: "Aquecimento e reconexão",
-    detail: "O executivo faz toques leves, sem pitch. O marketing segue presente no comitê. A conta sobe de banda conforme dá sinais.",
+export const modeloCommittee = {
+  title: "Trabalhamos o comitê em todo o ABM",
+  body:
+    "A decisão de compra passa por um time de pessoas, não por um contato. No Tier 2, alcançamos o comitê antes da primeira reunião para que a marca já seja conhecida quando a conversa começar. No Tier 1, seguimos penetrando o comitê do deal aberto: quanto mais gente da conta conhece a BlueMetrics, mais provável o fechamento. Por isso os anúncios rodam com frequência e segmentação nas pessoas-chave, enquanto o score diz a hora da abordagem do executivo.",
+  stat: {
+    value: "6 a 10",
+    label: "pessoas no comitê de compra B2B",
+    source: "Gartner",
+    note: "Convencer um contato não fecha o negócio: o comitê inteiro precisa reconhecer a solução. Por isso alcançamos todos os decisores e influenciadores, nos dois tiers.",
   },
-  {
-    threshold: "75",
-    title: "Pedido de reunião",
-    detail: "Gatilho oficial, SLA 24h. Aqui a conta vira SQL e entra na sequência de reunião.",
-  },
-];
+};
 
 export const goldenRule = "Abordar sob sinal, nunca a frio.";

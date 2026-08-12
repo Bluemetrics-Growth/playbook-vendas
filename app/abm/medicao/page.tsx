@@ -1,12 +1,14 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionShell } from "@/components/abm/SectionShell";
 import { MeasurementDashboard } from "@/components/abm/MeasurementDashboard";
-import { resultMetrics, progressMetrics, mqa, threeRs, alignment } from "@/content/abm/measurement";
+import { resultMetrics, progressMetrics, alignment } from "@/content/abm/measurement";
 import { ArrowUpRight } from "lucide-react";
 
 export const metadata = { title: "Mensuração" };
 
-const hubspotBase = process.env.NEXT_PUBLIC_HUBSPOT_BASE_URL || "https://app.hubspot.com";
+const dashboardUrl =
+  process.env.NEXT_PUBLIC_HUBSPOT_DASHBOARD_URL ||
+  "https://app.hubspot.com/reports-dashboard/22531017/view/21740275";
 
 export default function MedicaoPage() {
   return (
@@ -16,7 +18,7 @@ export default function MedicaoPage() {
         title="KPIs e painel no HubSpot"
         intro="Medimos por conta e pipeline. Os KPIs vivem em um painel do HubSpot que marketing e comercial acompanham juntos, semana a semana."
       >
-        <a href={hubspotBase} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-secondary mt-2 w-fit">
+        <a href={dashboardUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-secondary mt-2 w-fit">
           Abrir o painel no HubSpot <ArrowUpRight size={15} />
         </a>
       </PageHeader>
@@ -50,25 +52,12 @@ export default function MedicaoPage() {
         <MeasurementDashboard />
       </section>
 
-      {/* MQA */}
-      <section className="mb-10">
-        <div className="surface-card p-5">
-          <h3 className="font-display text-h4 font-semibold">{mqa.title}</h3>
-          <p className="mt-2 max-w-text text-body-sm text-fg-muted">{mqa.body}</p>
-          <div className="mt-4 flex gap-2">
-            {threeRs.map((r) => (
-              <span key={r} className="chip chip-blue">{r}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Acordo marketing + comercial */}
       <section>
         <h2 className="mb-4 font-display text-h3 font-semibold">O acordo entre marketing e comercial</h2>
         <div className="surface-card overflow-hidden">
           <div className="border-b border-border bg-bg-soft px-5 py-3">
-            <span className="font-medium text-fg">Um único motion, dois donos, a mesma régua</span>
+            <span className="font-medium text-fg">Mesmo alvo, dois donos, a mesma régua</span>
           </div>
           <ol className="divide-y divide-border">
             {alignment.map((k, i) => (

@@ -1,7 +1,7 @@
 import type { AbmSection } from "../types";
 
-// Ordem da trilha = ordem abaixo. Playbook de operação (o motion já está no ar
-// no HubSpot). cover: capa da tela. videoUrl: placeholder "vídeo em breve".
+// Ordem da trilha = ordem abaixo. Playbook de operação do ABM.
+// cover: capa da tela. videoUrl: placeholder "vídeo em breve".
 export const abmSections: AbmSection[] = [
   { slug: "tese", href: "/abm/tese", title: "A Tese", short: "Por que ABM na BlueMetrics", icon: "Lightbulb", group: "Tese", cover: "/brand/bg-rays.jpg", duration: "5 min", videoUrl: "/videos/abm/tese.mp4" },
   { slug: "modelo", href: "/abm/modelo", title: "O Modelo", short: "Tiers, score e status", icon: "Layers", group: "Modelo", cover: "/brand/bg-liquid-blue.png", duration: "6 min", videoUrl: "/videos/abm/modelo.mp4" },
