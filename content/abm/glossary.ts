@@ -17,6 +17,13 @@ export const glossary: GlossaryTerm[] = [
     seeAlsoLabel: "Ver no Modelo",
   },
   {
+    term: "Status ABM",
+    definition:
+      "Estado operacional da conta (ativa, dormente, cliente, perdida_reciclar, arquivada, perdida_arquivar). Só ativa permite permanência na esteira de nutrição. Lê-se junto com tier e score.",
+    seeAlso: "/abm/simulador",
+    seeAlsoLabel: "Ver no simulador",
+  },
+  {
     term: "Score de Abordagem",
     definition: "Lead score combinado do Tier 2, no objeto Empresa. Mede prontidão para conversa por comportamento.",
     seeAlso: "/abm/simulador",
