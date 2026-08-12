@@ -17,8 +17,16 @@ export const properties: Property[] = [
   {
     name: "Ideal Customer Profile Tier",
     object: "Empresa",
-    type: "Dropdown (Tier 1 / Tier 2)",
-    usage: "Roteia a conta para o motor certo",
+    type: "Dropdown (Tier 1 / Tier 2 / Tier 3)",
+    usage: "Diz quem a conta é e roteia para o motor certo. Mudar de Tier 2 para Tier 1 ou Tier 3 tira a conta da nutrição T2-0",
+  },
+  {
+    name: "Status ABM",
+    object: "Empresa",
+    type:
+      "Dropdown (ativa / dormente / cliente / perdida_reciclar / arquivada / perdida_arquivar)",
+    usage:
+      "Estado operacional da conta. Só permanece na esteira T2-0 quando o status é ativa. Qualquer outro estado encerra a permanência",
   },
   {
     name: "Target Account",
@@ -63,6 +71,7 @@ export const buildConventions: string[] = [
 
 export const buildChecklist: ChecklistItem[] = [
   { id: "chk-icp", group: "Fundação", label: "Popular Ideal Customer Profile Tier em todas as Target Accounts" },
+  { id: "chk-abmstatus", group: "Fundação", label: "Popular Status ABM (ativa como padrão de entrada)" },
   { id: "chk-scores", group: "Fundação", label: "Confirmar as duas propriedades de score publicadas" },
   { id: "chk-resultado", group: "Fundação", label: "Criar Resultado da reunião ABM" },
   { id: "chk-buyingrole", group: "Fundação", label: "Garantir Buying Role no comitê" },

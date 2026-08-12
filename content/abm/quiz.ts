@@ -30,6 +30,19 @@ export const checkpoint: QuizQuestion[] = [
       "Tier 2 (relacionamento) usa o Score de Abordagem (prontidão). Tier 1 (oportunidade) usa o Score de Prioridade (prioridade e saúde do deal).",
   },
   {
+    id: "q2b",
+    question: "O que mantém uma conta na esteira de nutrição T2-0?",
+    options: [
+      "Só o score estar entre 0 e 39.",
+      "ICP = Tier 2 E Score de Abordagem ≤ 39 E Status ABM = ativa, ao mesmo tempo.",
+      "O status ABM estar como dormente.",
+      "Qualquer conta Tier 2, independente de score e status.",
+    ],
+    answer: 1,
+    explanation:
+      "A permanência na T2-0 depende dos três sinais juntos: Tier 2, score ≤ 39 e Status ABM ativa. Se o score passa de 39, o ICP muda para Tier 1 ou Tier 3, ou o status sai de ativa, a conta deixa a esteira e é reavaliada.",
+  },
+  {
     id: "q3",
     question: "No Tier 2, o que acontece quando a conta cruza 75?",
     options: [

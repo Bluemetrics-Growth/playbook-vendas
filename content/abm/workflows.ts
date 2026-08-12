@@ -12,16 +12,18 @@ export const workflows: Workflow[] = [
   // ------------------------------------------------------------------ T2-0
   {
     id: "T2-0",
-    name: "[ABM][T2-0] Nutrição · Score 0-39",
+    name: "[ABM][T2-0] Nutrição com checkpoints de saída",
     tier: "Tier 2",
     band: "0-39",
     bandKind: "nurture",
-    trigger: "Target Account = true E Tier 2 E score 0-39",
+    trigger:
+      "Inscrição manual · permanência: ICP = Tier 2 E Score de Abordagem (Tier 2) ≤ 39 E Status ABM = ativa",
     owner: "Marketing (automação)",
     lifecycleEnd: "MQL",
-    cancelWhen: "Score ≥ 40",
+    cancelWhen:
+      "Score de Abordagem > 39 · OU ICP muda para Tier 1 ou Tier 3 · OU Status ABM sai de ativa (dormente, cliente, perdida_reciclar, arquivada, perdida_arquivar)",
     summary:
-      "Nutrição automática de baixa intensidade. Só a camada always-on trabalha até o primeiro sinal.",
+      "Nutrição automática de baixa intensidade enquanto a conta segue Tier 2, com score ≤ 39 e status ABM ativa. A camada always-on trabalha até o primeiro sinal, e checkpoints de 30, 60 e 90 dias úteis revisam se ainda faz sentido manter a conta na esteira.",
     tasks: [
       {
         id: "T2-0-1",
@@ -38,6 +40,38 @@ export const workflows: Workflow[] = [
         action: "Garantir Buying Roles na lista always-on de ads.",
         script:
           "Confirmar que os contatos com Buying Role da conta estão na matched audience de LinkedIn Ads.",
+      },
+      {
+        id: "T2-0-3",
+        day: "30u",
+        channel: "TAREFA",
+        priority: "Baixa",
+        action:
+          "Checkpoint de 30 dias úteis: criar tarefa de revisão. Confirmar se a conta ainda é Tier 2, segue com score ≤ 39 e status ABM ativa.",
+        branch: "Só se a conta permanece elegível em T2-0 (Tier 2 · score ≤ 39 · ativa).",
+        script:
+          "Revisão T2-0 (30 dias úteis): a conta ainda faz sentido em nutrição? Checar ICP (Tier 2), Score de Abordagem (≤ 39) e Status ABM (ativa). Se algo mudou, a conta já deve ter saído da esteira pelo critério de saída.",
+      },
+      {
+        id: "T2-0-4",
+        day: "60u",
+        channel: "TAREFA",
+        priority: "Baixa",
+        action:
+          "Checkpoint de 60 dias úteis: criar tarefa de toque leve. Um sinal de valor, sem pitch e sem pedir reunião.",
+        branch: "Só se a conta permanece elegível em T2-0 (Tier 2 · score ≤ 39 · ativa).",
+        script:
+          "Toque leve T2-0 (60 dias úteis): compartilhar um material de valor da dor do segmento. Objetivo é gerar o primeiro sinal, não avançar a conversa. Sem compromisso.",
+      },
+      {
+        id: "T2-0-5",
+        day: "90u",
+        channel: "automação",
+        action:
+          "Checkpoint de 90 dias úteis: marcar Status ABM = dormente e criar tarefa de revisão trimestral. A conta deixa de permanecer na esteira ativa.",
+        branch: "Se seguiu elegível sem sinal até 90 dias úteis → Status ABM = dormente → sai da T2-0.",
+        script:
+          "Revisão trimestral T2-0 (90 dias úteis): a conta ficou 90 dias úteis sem evoluir. Status ABM passa para dormente e ela sai desta esteira. Reavaliar no próximo ciclo por decisão humana.",
       },
     ],
   },
