@@ -82,13 +82,31 @@ export type Channel =
 
 export type Priority = "Alta" | "Média" | "Baixa";
 
+// Briefing diretivo de um toque 1:1 autoral. Entrega a direção do que escrever,
+// nunca a frase pronta (evita template de copiar e colar). Ver PRD "Roteiros
+// diretivos das esteiras ABM".
+export interface RoteiroBrief {
+  tipo: "brief" | "ligacao" | "bant";
+  objetivo?: string;
+  assunto?: string; // o que o assunto precisa provocar (só email)
+  conteudo?: string[]; // o que a mensagem precisa conter (ingredientes)
+  estrutura?: string; // como estruturar (mensagem) ou como conduzir (ligação)
+  perguntaGancho?: string; // o que a pergunta precisa revelar (só BANT)
+  comoAgir?: string; // como ler / como agir (só BANT)
+  personalizacao?: string; // o dado real inegociável, guardrail anti-template
+  extensaoTom?: string;
+  evite?: string[];
+  registro?: string; // lembrete de registrar no HubSpot (só Tier 1)
+}
+
 export interface Task {
   id: string;
   day: string; // D0, D+2...
   channel: Channel;
   priority?: Priority;
   action: string;
-  script?: string;
+  script?: string; // nota operacional literal (automação, T2-0, tarefas internas)
+  brief?: RoteiroBrief; // briefing diretivo de toque 1:1 autoral
   branch?: string; // ramificacao / condicao
 }
 

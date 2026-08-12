@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GitBranch } from "lucide-react";
-import type { Task, Workflow } from "@/content/types";
+import { GitBranch, PenLine, Compass, Target, Ban } from "lucide-react";
+import type { RoteiroBrief, Task, Workflow } from "@/content/types";
 import { ChannelBadge } from "./ChannelBadge";
 import { CopyButton } from "@/components/ui/CopyButton";
 
@@ -62,16 +62,115 @@ function TaskCard({ task, index }: { task: Task; index: number }) {
           </div>
         ) : null}
 
+        {task.brief ? <BriefCard brief={task.brief} /> : null}
+
         {task.script ? (
           <div className="mt-3 rounded-m border border-border bg-bg-soft">
             <div className="flex items-center justify-between border-b border-border px-3 py-1.5">
-              <span className="eyebrow text-[10px]">Roteiro</span>
-              <CopyButton text={task.script} label="Copiar roteiro" />
+              <span className="eyebrow text-[10px]">Nota operacional</span>
+              <CopyButton text={task.script} label="Copiar nota" />
             </div>
             <pre className="mono whitespace-pre-wrap px-3 py-2.5 text-[13px] leading-relaxed text-fg">{task.script}</pre>
           </div>
         ) : null}
       </div>
     </motion.li>
+  );
+}
+
+/** Ficha diretiva: entrega a direção do toque, nunca a frase pronta. */
+function BriefCard({ brief }: { brief: RoteiroBrief }) {
+  const isBant = brief.tipo === "bant";
+  const isLigacao = brief.tipo === "ligacao";
+  const heading = isBant ? "Como conduzir" : "Como escrever este toque";
+  const HeadIcon = isBant ? Compass : PenLine;
+  const estruturaLabel = isLigacao ? "Como conduzir" : "Como estruturar";
+
+  // Checklist copiável: os ingredientes obrigatórios e a personalização.
+  const checklist = [
+    ...(brief.conteudo ?? []),
+    ...(brief.perguntaGancho ? [brief.perguntaGancho] : []),
+    ...(brief.comoAgir ? [brief.comoAgir] : []),
+    ...(brief.personalizacao ? [`Personalização: ${brief.personalizacao}`] : []),
+  ]
+    .map((i) => `- ${i}`)
+    .join("\n");
+
+  return (
+    <div className="mt-3 rounded-m border border-border bg-bg-soft">
+      <div className="flex items-center justify-between border-b border-border px-3 py-1.5">
+        <span className="flex items-center gap-1.5 eyebrow text-[10px]">
+          <HeadIcon size={12} className="text-primary" /> {heading}
+        </span>
+        {checklist ? <CopyButton text={checklist} label="Copiar checklist" /> : null}
+      </div>
+
+      <div className="flex flex-col gap-3 px-3 py-3">
+        {brief.objetivo ? <Field label="Objetivo do toque" value={brief.objetivo} /> : null}
+        {brief.assunto ? <Field label="Assunto (o que provocar)" value={brief.assunto} /> : null}
+        {brief.conteudo?.length ? <ListField label="O que a mensagem precisa conter" items={brief.conteudo} /> : null}
+        {brief.perguntaGancho ? <Field label="Pergunta-gancho" value={brief.perguntaGancho} /> : null}
+        {brief.comoAgir ? <Field label="Como ler e agir" value={brief.comoAgir} /> : null}
+        {brief.estrutura ? <Field label={estruturaLabel} value={brief.estrutura} /> : null}
+        {brief.personalizacao ? (
+          <Field label="Personalização inegociável" value={brief.personalizacao} accent="primary" icon={<Target size={13} />} />
+        ) : null}
+        {brief.extensaoTom ? <Field label="Extensão e tom" value={brief.extensaoTom} /> : null}
+        {brief.evite?.length ? <ListField label="Evite" items={brief.evite} tone="danger" icon={<Ban size={13} />} /> : null}
+        {brief.registro ? (
+          <Field label="Registro no HubSpot" value={brief.registro} accent="primary" />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  value,
+  accent,
+  icon,
+}: {
+  label: string;
+  value: string;
+  accent?: "primary";
+  icon?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="flex items-center gap-1 eyebrow text-[10px]" style={accent === "primary" ? { color: "var(--primary)" } : undefined}>
+        {icon} {label}
+      </span>
+      <span className="text-[13px] leading-relaxed text-fg">{value}</span>
+    </div>
+  );
+}
+
+function ListField({
+  label,
+  items,
+  tone,
+  icon,
+}: {
+  label: string;
+  items: string[];
+  tone?: "danger";
+  icon?: React.ReactNode;
+}) {
+  const dot = tone === "danger" ? "var(--danger)" : "var(--primary)";
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="flex items-center gap-1 eyebrow text-[10px]" style={tone === "danger" ? { color: "var(--danger)" } : undefined}>
+        {icon} {label}
+      </span>
+      <ul className="flex flex-col gap-1">
+        {items.map((it) => (
+          <li key={it} className="flex items-start gap-2 text-[13px] leading-relaxed text-fg">
+            <span className="mt-1.5 h-1 w-1 flex-none rounded-full" style={{ background: dot }} />
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
