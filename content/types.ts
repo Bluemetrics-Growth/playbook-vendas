@@ -95,7 +95,7 @@ export interface Task {
   branch?: string; // ramificacao / condicao
 }
 
-export type WorkflowGroup = "Tier 2" | "Movimento" | "Tier 1";
+export type WorkflowGroup = "Tier 2" | "Movimento" | "Tier 1" | "Tier 3";
 
 export interface Workflow {
   id: string; // ex.: 'T2-3'
@@ -179,6 +179,40 @@ export interface SearchItem {
   subtitle?: string;
   href: string;
   keywords: string;
+}
+
+// ---------------------------------------------------------------- Tier 3
+// Conteúdo estruturado da seção Tier 3 (prospecção US, coorte mista new logo +
+// winback). Fonte da verdade: PRD "Expansão do Playbook ABM para Tier 3".
+// Regra editorial: separar o que é regra confirmada do que ainda é decisão em
+// aberto. Não inventar thresholds, enums ou automações não confirmadas.
+export interface Tier3Point {
+  title: string;
+  body: string;
+}
+
+export interface Tier3Stage {
+  id: string;
+  workflowId?: string;
+  name: string;
+  band?: string;
+  bandKind?: BandKind;
+  objetivo: string;
+  gatilhoEntrada: string;
+  permanencia: string;
+  saida: string;
+  canais: string;
+  proximoEstado: string;
+  guardrails: string;
+}
+
+export type DecisionStatus = "confirmado" | "pendente";
+
+export interface Tier3Decision {
+  id: string;
+  title: string;
+  body: string;
+  status: DecisionStatus;
 }
 
 // ---------------------------------------------------------------- Checkpoint

@@ -1,8 +1,8 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionShell } from "@/components/abm/SectionShell";
 import { IfThenMap } from "@/components/abm/IfThenMap";
-import { orchestrationSequence, slaNote } from "@/content/abm/orchestration";
-import { ArrowRight } from "lucide-react";
+import { orchestrationSequence, slaNote, tier3RouterNote } from "@/content/abm/orchestration";
+import { ArrowRight, Route } from "lucide-react";
 
 export const metadata = { title: "Orquestração" };
 
@@ -41,6 +41,11 @@ export default function OrquestracaoPage() {
 
       <div className="rounded-m border border-border bg-bg-soft px-4 py-3 text-body-sm text-fg-muted">
         {slaNote}
+      </div>
+
+      <div className="mt-3 flex items-start gap-3 rounded-m border border-primary/25 bg-primary-soft px-4 py-3 text-body-sm text-primary">
+        <Route size={16} className="mt-0.5 flex-none" />
+        <span>{tier3RouterNote}</span>
       </div>
     </SectionShell>
   );

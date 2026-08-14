@@ -7,7 +7,8 @@ export const properties: Property[] = [
     name: "Score de Abordagem",
     object: "Empresa",
     type: 'Pontuação combinada ("Lead score Tier 2")',
-    usage: "Gatilho das bandas do Tier 2",
+    usage:
+      "Gatilho das bandas do Tier 2. O Tier 3 herda este mesmo score e os mesmos cortes de banda",
   },
   {
     name: "Score de Prioridade",
@@ -52,6 +53,13 @@ export const properties: Property[] = [
     object: "Contato",
     type: "Data (nativa)",
     usage: "Alimenta a penalidade nativa do Score de Prioridade",
+  },
+  {
+    name: "ABM Banda atual",
+    object: "Empresa",
+    type: "Texto (hoje). Idealmente evoluir para seleção controlada (dropdown)",
+    usage:
+      "Pivô lógico do roteamento por banda. Hoje existe como campo de texto: é dívida técnica/funcional, porque texto livre aumenta o risco de inconsistência de valores e de roteamento errado",
   },
 ];
 

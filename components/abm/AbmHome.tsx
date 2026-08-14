@@ -30,8 +30,8 @@ export function AbmHome() {
             O sistema operacional de crescimento por conta.
           </h1>
           <p className="mt-3 max-w-narrow text-body" style={{ color: "var(--fg-on-dark-2)" }}>
-            Conta como unidade, dois tiers, dois scores, esteiras de cadência e mensuração por conta e pipeline.
-            Este é o playbook de operação do ABM.
+            Conta como unidade, três tiers, dois scores, esteiras de cadência e mensuração por conta e pipeline.
+            Este é o playbook de operação do ABM, do relacionamento ao fechamento e à prospecção fria dos EUA.
           </p>
         </div>
       </div>

@@ -51,6 +51,31 @@ export const glossary: GlossaryTerm[] = [
   },
   {
     term: "Pipeline Pibernat",
-    definition: "Pipeline real do Tier 1 no HubSpot.",
+    definition: "Pipeline real do Tier 1 no HubSpot. É onde o deal nasce quando uma conta é promovida (do Tier 2 ou do Tier 3) por aderência e oportunidade real.",
+  },
+  {
+    term: "Tier 3",
+    definition:
+      "Camada de prospecção ABM para contas frias ou mornas dos Estados Unidos, com abordagem de escala controlada. Coorte mista de new logos e winback. Herda o Score de Abordagem e as bandas do Tier 2. É extensão do framework, não uma máquina paralela.",
+  },
+  {
+    term: "Winback",
+    definition:
+      "Subtipo de coorte do Tier 3: empresas que já foram clientes BlueMetrics e voltam para esforço de reativação. Segue a mesma lógica operacional do frio, sem tier separado nem motor lógico paralelo, salvo decisão futura de especialização.",
+  },
+  {
+    term: "Roteador canônico",
+    definition:
+      "Uma única entrada por tier que lê a banda atual e faz a inscrição atômica na esteira certa. Inscreve por cruzamento de limiar, decide uma banda por vez e desinscreve da esteira anterior ao mudar de banda.",
+  },
+  {
+    term: "ABM Banda atual",
+    definition:
+      "Propriedade de empresa que guarda a banda de roteamento. Pivô lógico do fluxo. Hoje é campo de texto (dívida técnica), idealmente deve virar seleção controlada.",
+  },
+  {
+    term: "Anti-thrashing / reentrada segura",
+    definition:
+      "Guardrails do roteamento. Anti-thrashing evita idas e vindas por oscilação marginal (ativa x dormente, banda A x banda B). Reentrada segura exige recomputar ou resetar o Score de Abordagem antes de rotear uma conta que reentra, para score residual não recolocá-la numa banda inadequada.",
   },
 ];

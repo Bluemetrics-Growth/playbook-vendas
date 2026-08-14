@@ -7,7 +7,7 @@ import { modeloTiers, modeloSignals, modeloCommittee } from "@/content/abm/prose
 import { Icon } from "@/components/ui/Icon";
 
 export function TierExplorer() {
-  const [selected, setSelected] = useState<"Tier 2" | "Tier 1">("Tier 2");
+  const [selected, setSelected] = useState<string>(modeloTiers[0].tier);
 
   return (
     <div className="flex flex-col gap-8">
@@ -36,14 +36,14 @@ export function TierExplorer() {
 
       {/* Tiers */}
       <div className="flex flex-col gap-4">
-        <span className="eyebrow">Os dois tiers</span>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <span className="eyebrow">Os três tiers</span>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {modeloTiers.map((t) => {
             const active = selected === t.tier;
             return (
               <button
                 key={t.tier}
-                onClick={() => setSelected(t.tier as "Tier 2" | "Tier 1")}
+                onClick={() => setSelected(t.tier)}
                 aria-pressed={active}
                 className={[
                   "flex flex-col gap-3 rounded-xl border p-5 text-left transition-all",

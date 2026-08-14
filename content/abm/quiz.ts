@@ -313,6 +313,58 @@ export const questionBank: QuizQuestion[] = [
       "52 cai na banda 40-59 (reconexão leve). O executivo faz um toque humano suave, ancorado no relacionamento, sem pedir reunião ainda.",
   },
   {
+    id: "q-t3-score",
+    question: "Qual score o Tier 3 usa para classificar as contas?",
+    options: [
+      "Um score novo, criado só para o Tier 3.",
+      "O Score de Abordagem do Tier 2, com as mesmas bandas.",
+      "O Score de Prioridade do Tier 1.",
+      "Nenhum, é decisão manual.",
+    ],
+    answer: 1,
+    explanation:
+      "O Tier 3 não tem score próprio: herda o Score de Abordagem do Tier 2 e os mesmos cortes de banda (0-39, 40-59, 60-74, 75-100).",
+  },
+  {
+    id: "q-t3-roteador",
+    question: "O que o roteador canônico do Tier 3 faz quando uma conta muda de banda?",
+    options: [
+      "Inscreve na nova esteira e deixa a conta nas duas ao mesmo tempo.",
+      "Desinscreve da esteira anterior antes de inscrever na nova (decisão atômica).",
+      "Cria um deal no Pibernat.",
+      "Rebaixa a conta para Tier 2.",
+    ],
+    answer: 1,
+    explanation:
+      "O roteador faz a inscrição atômica por banda: ao mudar de banda, desinscreve da esteira anterior antes de entrar na nova. Uma conta nunca fica ativa em duas esteiras.",
+  },
+  {
+    id: "q-t3-promocao",
+    question: "O que a promoção de uma conta do Tier 3 para o Tier 1 exige, além da aderência na reunião?",
+    options: [
+      "Nada além do resultado da reunião.",
+      "Um contato associado à empresa (copiar ou reaproveitar se faltar) e o deal no Pibernat.",
+      "Que o score chegue a 100.",
+      "Aprovação do marketing.",
+    ],
+    answer: 1,
+    explanation:
+      "A promoção exige contato associado à empresa. Onde não houver, copia-se ou reaproveita-se os contatos já associados. Aí cria-se o deal no Pipeline Pibernat e a task de handoff.",
+  },
+  {
+    id: "q-t3-winback",
+    question: "Como o winback (ex-clientes) é tratado no Tier 3?",
+    options: [
+      "Como um tier separado, com motor lógico próprio.",
+      "Como subtipo de coorte, na mesma lógica do frio, sem bifurcação estrutural obrigatória.",
+      "Como Tier 1 direto, com deal aberto.",
+      "É ignorado no Tier 3.",
+    ],
+    answer: 1,
+    explanation:
+      "O winback é subtipo de coorte do Tier 3. Segue a mesma lógica operacional do frio, sem tier separado nem motor paralelo, salvo decisão futura de especialização.",
+  },
+  {
     id: "q-saida-deal",
     question: "Quando uma conta finalmente sai do Tier 1?",
     options: [

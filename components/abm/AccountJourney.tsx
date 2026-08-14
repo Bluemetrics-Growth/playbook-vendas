@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Megaphone, ArrowDown } from "lucide-react";
+import { ArrowRight, Megaphone, ArrowDown, Globe } from "lucide-react";
 import type { BandKind } from "@/content/types";
 import { kindMeta } from "@/components/ui/BandBadge";
 import { Icon } from "@/components/ui/Icon";
@@ -122,6 +122,21 @@ export function AccountJourney() {
           Tier 1 nunca volta para Tier 2: o score move entre bandas, a saída só acontece no fechamento do deal.
         </span>
       </div>
+
+      <Link
+        href="/abm/tier3"
+        className="surface-card flex items-center gap-3 p-4 transition-colors hover:border-border-strong"
+      >
+        <span className="flex h-9 w-9 flex-none items-center justify-center rounded-m bg-primary-soft text-primary">
+          <Globe size={18} />
+        </span>
+        <span className="flex-1 text-body-sm text-fg-muted">
+          <strong className="text-fg">O Tier 3 tem a sua própria jornada.</strong> Prospecção fria de contas dos EUA
+          (new logo e winback), com roteador canônico por banda e promoção para Tier 1 por aderência. Veja a seção
+          Tier 3.
+        </span>
+        <ArrowRight size={16} className="flex-none text-fg-hint" />
+      </Link>
     </div>
   );
 }
