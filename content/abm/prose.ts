@@ -91,6 +91,16 @@ export const modeloTiers = [
     focus: "Penetrar o comitê inteiro e sustentar a prioridade do deal até o fechamento.",
     deal: "Deal aberto garante a permanência. Nunca é rebaixado. Só sai quando o deal fecha.",
   },
+  {
+    tier: "Tier 3",
+    kicker: "prospecção US",
+    who: "Contas frias ou mornas dos Estados Unidos, priorizadas para prospecção outbound ABM. Coorte mista: new logos e winback (ex-clientes BlueMetrics). Operação mais fria e escalável que o Tier 2.",
+    score: "Score de Abordagem, herdado do Tier 2 (mesmos cortes de banda)",
+    status: "Ativa enquanto está em prospecção. Sai para dormente, promovida a Tier 1, ou reciclada.",
+    bands: "0-39 ativação fria · 40-59 primeiro toque · 60-74 sequência de ativação · 75+ pedido de reunião",
+    focus: "Transformar dor percebida em baseline mensurável e abrir a primeira conversa, sob roteador canônico por banda.",
+    deal: "Sem deal ainda. Vira Tier 1 quando a reunião tem aderência e há contato associado.",
+  },
 ];
 
 export const modeloSignals = [
@@ -99,14 +109,14 @@ export const modeloSignals = [
     icon: "Layers",
     title: "Tier / ICP",
     lead: "Diz quem a conta é.",
-    detail: "O peso estratégico e o motor que roteia a conta. Tier 2 é relacionamento, Tier 1 é oportunidade com deal aberto.",
+    detail: "O peso estratégico e o motor que roteia a conta. Tier 2 é relacionamento, Tier 1 é oportunidade com deal aberto, Tier 3 é prospecção fria de contas US (new logo e winback).",
   },
   {
     id: "score",
     icon: "Gauge",
     title: "Score do tier",
     lead: "Diz quão aquecida ela está.",
-    detail: "Cada tier tem o seu score. No Tier 2 lemos o Score de Abordagem, no Tier 1 o Score de Prioridade. É o score que move a conta entre bandas.",
+    detail: "No Tier 2 lemos o Score de Abordagem, no Tier 1 o Score de Prioridade, e o Tier 3 herda o Score de Abordagem do Tier 2. É o score que move a conta entre bandas.",
   },
   {
     id: "status",

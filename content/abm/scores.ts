@@ -128,6 +128,20 @@ export const scorePrioridade: Score = {
 
 export const scores = { abordagem: scoreAbordagem, prioridade: scorePrioridade };
 
+// O Tier 3 (prospecção US) não tem score próprio: herda o Score de Abordagem do
+// Tier 2 como base de classificação, com os mesmos cortes de banda (0-39, 40-59,
+// 60-74, 75-100). Regra confirmada pelo PRD de expansão. A auditoria integral das
+// regras dos dois leadscores ainda não foi fechada, então thresholds e pesos não
+// devem ser reinventados: o que está aqui é a referência operacional acordada.
+export const tier3ScoreNote = {
+  title: "O Tier 3 herda o score do Tier 2",
+  body:
+    "O Tier 3 usa o Score de Abordagem como base de classificação, com as mesmas bandas do Tier 2. Não existe um score novo para o Tier 3 e não haverá, a menos que seja solicitado depois. A leitura de intenção e prioridade que move a conta entre bandas é a mesma que você já viu no Tier 2.",
+  bandsInherited: "0-39 · 40-59 · 60-74 · 75-100 (idênticas ao Tier 2)",
+  caveat:
+    "A estrutura dos scores está parcialmente confirmada. A auditoria completa das regras ainda não foi concluída. Onde uma regra depender de validação, o playbook sinaliza. Não inventar thresholds, pesos ou eventos de score.",
+};
+
 // Preset do Tier 1: reproduz o mecanismo do exemplo canonico
 // "deal quente que fica 14 dias mudo cai da banda de fechamento (80+) para a
 //  nutricao do Tier 1, sem rebaixar de tier". O material cita 84 -> 74.

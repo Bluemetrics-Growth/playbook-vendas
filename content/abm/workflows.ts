@@ -801,6 +801,475 @@ export const workflows: Workflow[] = [
       },
     ],
   },
+
+  // ================================================================== TIER 3
+  // Prospecção ABM para contas frias/mornas dos Estados Unidos. Coorte mista:
+  // new logos e winback (ex-clientes BlueMetrics). O Tier 3 herda o Score de
+  // Abordagem e as bandas do Tier 2. Fonte: PRD Expansão Tier 3.
+
+  // ---------------------------------------------------------------- ROTEADOR T3
+  {
+    id: "ROTEADOR-T3",
+    name: "[ABM][ROTEADOR][T3][US] Definição da banda atual",
+    tier: "Tier 3",
+    trigger:
+      "Score de Abordagem cruza um limiar de banda (sobe e cruza 40, 60 ou 75) numa conta com ICP = Tier 3 e Status ABM = ativa. Não dispara por um genérico score mudou.",
+    owner: "Company owner (automação)",
+    cancelWhen:
+      "ICP sai de Tier 3 · OU Status ABM sai de ativa · OU a conta vira Tier 1 (deal criado)",
+    summary:
+      "Roteador canônico do Tier 3. Uma única entrada que lê a banda atual (herdada do Score de Abordagem do Tier 2) e faz a inscrição atômica na esteira certa. Ao mudar de banda, desinscreve a conta da esteira anterior antes de inscrever na nova. Assim uma conta nunca fica ativa em duas esteiras ao mesmo tempo.",
+    tasks: [
+      {
+        id: "ROTEADOR-T3-1",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Ler a banda atual pelo Score de Abordagem e gravar em ABM Banda atual. Bandas herdadas do Tier 2: 0-39 ativação fria (T3-0), 40-59 primeiro toque (T3-1), 60-74 sequência de ativação (T3-2), 75-100 pedido de reunião (T3-3).",
+        script:
+          "Roteamento por banda (herdada do Tier 2):\n0-39  -> T3-0 Ativação fria\n40-59 -> T3-1 Primeiro toque frio\n60-74 -> T3-2 Sequência de ativação\n75+   -> T3-3 Pedido de reunião (gatilho, SLA 24h)\nDecisão atômica: uma banda, uma esteira.",
+      },
+      {
+        id: "ROTEADOR-T3-2",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Auto-desinscrição: ao trocar de banda, remover a conta da esteira anterior do Tier 3 antes de inscrever na nova. Evita duas esteiras ativas na mesma conta.",
+        branch: "Mudou de banda → desinscreve da esteira anterior → inscreve na nova.",
+      },
+      {
+        id: "ROTEADOR-T3-3",
+        day: "auto",
+        channel: "automação",
+        action:
+          "Reentrada segura: quando a conta reentra no Tier 3 (volta de dormência ou reciclagem), recomputar ou resetar o Score de Abordagem antes de rotear. Score residual não pode recolocar a conta numa banda aleatória.",
+        branch: "Reentrada → recomputar/resetar Score de Abordagem → só então rotear.",
+        script:
+          "Guardrail anti-thrashing: exigir subida relevante e cruzamento de limiar, não oscilação marginal, para promover de banda. Rebaixar só com queda sustentada.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- T3-0
+  {
+    id: "T3-0",
+    name: "[ABM][T3-0][US] Ativação fria",
+    tier: "Tier 3",
+    band: "0-39",
+    bandKind: "nurture",
+    trigger:
+      "Roteador T3 com banda 0-39 · permanência: ICP = Tier 3 E Score de Abordagem ≤ 39 E Status ABM = ativa",
+    owner: "Company owner",
+    lifecycleEnd: "MQL",
+    cancelWhen:
+      "Score de Abordagem > 39 · OU ICP sai de Tier 3 · OU Status ABM sai de ativa",
+    summary:
+      "Coloca a conta elegível do segmento US em observação ativa e prepara a entrada na esteira sem atrito alto. A comunicação de marketing trabalha o comitê enquanto os checkpoints validam a permanência antes de avançar. Serve tanto para new logo quanto para winback.",
+    tasks: [
+      {
+        id: "T3-0-1",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Se Lifecycle = Lead, setar MQL. Colocar a conta em observação ativa e garantir os contatos com Buying Role na comunicação de marketing (LinkedIn Ads) do segmento US.",
+        script:
+          "Observação ativa: presença de marca no comitê US, sem toque humano ainda. Objetivo é preparar terreno e captar o primeiro sinal de comportamento que suba o Score de Abordagem.",
+      },
+      {
+        id: "T3-0-2",
+        day: "30d",
+        channel: "TAREFA",
+        priority: "Baixa",
+        action:
+          "Checkpoint de 30 dias corridos: tarefa de revisão. Confirmar se a conta segue Tier 3, com score ≤ 39 e status ativa, e se ainda faz sentido manter em ativação fria.",
+        branch:
+          "Só se a conta permanece elegível em T3-0 (Tier 3 · score ≤ 39 · ativa).",
+        script:
+          "Revisão T3-0 (30 dias corridos): a conta ainda faz sentido em ativação fria? Checar ICP (Tier 3), Score de Abordagem (≤ 39) e Status ABM (ativa). ATENÇÃO: o prazo de 30 dias corridos é o comportamento atual da implementação citada, mas está sujeito a decisão final (há divergência entre dias corridos e dias úteis na documentação). Ver bloco de pendências.",
+      },
+      {
+        id: "T3-0-3",
+        day: "auto",
+        channel: "automação",
+        action:
+          "Sem sinal e seguindo elegível, encaminhar para a lógica de dormência do Tier 3. A conta deixa de permanecer na esteira ativa.",
+        branch:
+          "Elegível e sem sinal até o corte de permanência → Dormência Tier 3 (MOV-DORM-T3).",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- T3-1
+  {
+    id: "T3-1",
+    name: "[ABM][T3-1][US] Primeiro toque frio",
+    tier: "Tier 3",
+    band: "40-59",
+    bandKind: "warm",
+    trigger: "Score de Abordagem cruza 40 numa conta Tier 3 ativa",
+    owner: "Company owner",
+    lifecycleEnd: "MQL",
+    summary:
+      "Primeira ativação consultiva da conta com abordagem fria. Foco em dor e resultado, linguagem consultiva, baixo atrito. Sem pitch antecipado de features e sem pressão de agenda logo no primeiro passo. É a exceção deliberada à regra de ouro: o Tier 3 abre mais frio, mas o pedido de reunião (T3-3) segue dependendo de sinal.",
+    tasks: [
+      {
+        id: "T3-1-1",
+        day: "D0",
+        channel: "EMAIL 1:1",
+        priority: "Média",
+        action:
+          "Primeiro toque frio consultivo. Conectar uma dor real do segmento a um resultado concreto, sem falar de produto.",
+        brief: {
+          tipo: "brief",
+          assunto:
+            "Deve provocar curiosidade sobre a operação dela com um dado do mercado dela, não anunciar a BlueMetrics.",
+          objetivo:
+            "Fazer uma conta que ainda não conhece a BlueMetrics enxergar um problema real, com uma abordagem fria mas consultiva. A meta é abrir diálogo, não marcar reunião.",
+          conteudo: [
+            "Um benchmark real do segmento US (eficiência perdida, tempo gasto, custo de erro), ancorado no que a BlueMetrics vê no mercado, nunca inventado.",
+            "A ponte para a provável realidade da empresa dela.",
+            "Se for winback (ex-cliente BlueMetrics), uma referência honesta e leve ao histórico, sem cobrança.",
+            "Permissão explícita para responder só se fizer sentido.",
+          ],
+          estrutura:
+            "Abre com o número que gera desconforto produtivo. Conecta à operação dela. Encerra com uma pergunta leve, sem CTA de agenda.",
+          personalizacao:
+            "O benchmark tem que ser do segmento e do porte dela. Para winback, o histórico citado tem que ser verdadeiro. Se você não tem o dado real, pesquise antes de escrever.",
+          extensaoTom:
+            "Curto, 4 a 6 linhas, consultivo, escrito em inglês nativo para o mercado US. Frio no relacionamento, quente na relevância.",
+          evite: [
+            "Falar de features, cases fechados ou pedir reunião.",
+            "Tom de template de massa. Abordagem fria não é abordagem genérica.",
+          ],
+        },
+      },
+      {
+        id: "T3-1-2",
+        day: "D+3",
+        channel: "LINKEDIN",
+        priority: "Baixa",
+        action:
+          "Só se ainda sem resposta. Conexão com nota curta no mesmo ângulo do email, sem repetir o texto.",
+        branch: "Só se ainda não respondeu ao email.",
+        brief: {
+          tipo: "brief",
+          objetivo:
+            "Reforçar presença por outro canal, mantendo o mesmo fio da dor, sem cobrar retorno.",
+          conteudo: [
+            "Referência ao ângulo do primeiro toque, não ao email em si.",
+            "Um sinal de que você acompanha o segmento dela.",
+            "Porta aberta, sem pedido.",
+          ],
+          estrutura:
+            "Conecta ao tema. Mostra relevância. Encerra sem pressão.",
+          personalizacao:
+            "Mesmo ângulo do email. Consistência é o que constrói o sinal numa conta fria.",
+          extensaoTom: "2 a 3 frases, nota de convite curta.",
+          evite: [
+            "Trocar de tema ou abrir com pitch.",
+            "Pedir reunião nesta etapa.",
+          ],
+        },
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- T3-2
+  {
+    id: "T3-2",
+    name: "[ABM][T3-2][US] Sequência de ativação",
+    tier: "Tier 3",
+    band: "60-74",
+    bandKind: "attention",
+    trigger: "Score de Abordagem cruza 60 numa conta Tier 3 ativa",
+    owner: "Company owner",
+    lifecycleEnd: "MQL",
+    summary:
+      "Continuidade da ativação com cadência multicanal orientada a baseline, ROI e mini-diagnóstico. Conecta a dor a um resultado concreto e usa benchmark real do segmento. Sem discurso de feature, sem pedido prematuro de reunião.",
+    tasks: [
+      {
+        id: "T3-2-1",
+        day: "D0",
+        channel: "EMAIL 1:1",
+        priority: "Média",
+        action:
+          "Email 1:1 de observação e valor. Ancorar a dor na realidade da empresa e oferecer o mini-diagnóstico como próximo passo leve.",
+        brief: {
+          tipo: "brief",
+          assunto:
+            "Deve sugerir que existe um dado sobre a operação dela que vale a leitura, sem anunciar produto.",
+          objetivo:
+            "Transformar a dor percebida em baseline mensurável, oferecendo uma forma de medir isso sem custo e sem reunião.",
+          conteudo: [
+            "Um benchmark real do segmento US.",
+            "A ponte para a operação específica da empresa dela.",
+            "A oferta do mini-diagnóstico como instrumento de medição do baseline.",
+            "Fricção mínima: você monta, ela só recebe.",
+          ],
+          estrutura:
+            "Abre no número. Conecta à realidade dela. Oferece o mini-diagnóstico. Fecha sem pressão de agenda.",
+          personalizacao:
+            "O benchmark e o processo citado têm que ser do segmento e do porte dela. Para BlueDocs, use o custo de análise manual como instrumento concreto. Para outros Solution Packs, descreva o baseline equivalente da dor.",
+          extensaoTom:
+            "Curto, 4 a 6 linhas, escaneável, consultivo, orientado a número, em inglês nativo.",
+          evite: [
+            "Falar de features da BlueMetrics.",
+            "Pedir reunião. O foco é a dor mensurável.",
+          ],
+        },
+      },
+      {
+        id: "T3-2-2",
+        day: "D+4",
+        channel: "LINKEDIN",
+        priority: "Baixa",
+        action: "Follow-up no mesmo ângulo do email. Reduz a fricção do sim.",
+        brief: {
+          tipo: "brief",
+          objetivo: "Manter o mesmo fio (o baseline) e reduzir a fricção do sim.",
+          conteudo: [
+            "Retomada do mini-diagnóstico sem repetir o email inteiro.",
+            "O esforço real que aquilo exige dela (poucos minutos).",
+            "Uma pergunta simples de sim ou não.",
+          ],
+          estrutura:
+            "Referencia o toque anterior. Dimensiona o esforço como baixo. Pergunta se faz sentido.",
+          personalizacao:
+            "Mesmo ângulo do email, sem trocar de tema. Consistência constrói o sinal.",
+          extensaoTom: "2 a 3 frases.",
+          evite: ["Novo tema ou novo material.", "Pedido de reunião formal."],
+        },
+      },
+      {
+        id: "T3-2-3",
+        day: "D+8",
+        channel: "WHATSAPP",
+        priority: "Baixa",
+        action:
+          "Só se já houve resposta anterior. Um exemplo real de antes e depois do segmento.",
+        branch: "Só se já houve resposta anterior (respeitar canal e compliance US).",
+        brief: {
+          tipo: "brief",
+          objetivo:
+            "Usar um exemplo real de antes e depois para transformar interesse em intenção.",
+          conteudo: [
+            "Um exemplo concreto do segmento, com antes e depois.",
+            "A escolha de canal para ela (aqui ou por email).",
+            "Leveza.",
+          ],
+          estrutura: "Oferece a prova. Deixa ela escolher como receber. Sem cobrança.",
+          personalizacao:
+            "Só disparar se já houve resposta anterior. O exemplo tem que ser do mesmo segmento ou dor.",
+          extensaoTom: "1 a 2 linhas.",
+          evite: ["Mandar sem resposta prévia.", "Despejar o case inteiro."],
+        },
+      },
+      {
+        id: "T3-2-4",
+        day: "auto",
+        channel: "automação",
+        action:
+          "Ramificação: usar o instrumento (mini-diagnóstico/calculadora) ou responder faz o Score de Abordagem cruzar 75 e o roteador move para T3-3.",
+        branch: "Usar o instrumento ou responder → cruza 75 → T3-3.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- T3-3
+  {
+    id: "T3-3",
+    name: "[ABM][T3-3][US] Pedido de reunião",
+    tier: "Tier 3",
+    band: "75-100",
+    bandKind: "trigger",
+    trigger: "Score de Abordagem cruza 75 numa conta Tier 3 ativa",
+    owner: "Company owner",
+    sla: "24h",
+    lifecycleEnd: "SQL",
+    isGate: true,
+    summary:
+      "Gatilho oficial do Tier 3. A conta já passou por ativação suficiente para justificar o pedido de reunião sem parecer salto de contexto. Converter interesse validado em conversa comercial qualificada, com gancho no sinal recente. SLA de 24h.",
+    tasks: [
+      {
+        id: "T3-3-0",
+        day: "D0",
+        channel: "automação",
+        action: "Setar Lifecycle = SQL.",
+      },
+      {
+        id: "T3-3-1",
+        day: "D0",
+        channel: "EMAIL 1:1",
+        priority: "Alta",
+        action:
+          "Pedir a reunião direto, com gancho no sinal recente. SLA 24h. (ou LinkedIn se for o canal com histórico)",
+        brief: {
+          tipo: "brief",
+          assunto:
+            "Deve deixar claro, em uma linha, o resultado que a reunião estima para a empresa dela.",
+          objetivo:
+            "Converter um sinal quente e recente em reunião, agindo dentro do SLA de 24h. Aqui a regra de ouro volta: aborda-se sob sinal.",
+          conteudo: [
+            "Referência explícita ao sinal que disparou o gatilho (usou o instrumento, baixou material, visitou uma página), citado com naturalidade.",
+            "A leitura do que aquele sinal costuma indicar.",
+            "O convite direto para 30 minutos, com o benefício claro (mostrar como o segmento dela resolveu aquilo).",
+            "Dois horários concretos para reduzir atrito, em fuso US.",
+          ],
+          estrutura:
+            "Abre no sinal recente. Interpreta o sinal em uma frase. Propõe os 30 minutos com o valor explícito. Oferece duas janelas.",
+          personalizacao:
+            "O sinal citado tem que ser o real e recente. Se você não sabe qual foi, confira no HubSpot antes de escrever.",
+          extensaoTom:
+            "Direto e confiante, 3 a 4 frases, em inglês nativo. É pedido de reunião, não continuação de nutrição.",
+          evite: [
+            "Rodeios e será que faz sentido.",
+            "Agenda aberta. Ofereça horários.",
+          ],
+        },
+      },
+      {
+        id: "T3-3-2",
+        day: "D+3",
+        channel: "LINKEDIN",
+        priority: "Média",
+        action: "Só se não respondeu, novo ângulo (case do segmento).",
+        branch: "Só se não respondeu.",
+        brief: {
+          tipo: "brief",
+          objetivo:
+            "Quebrar o silêncio com um ângulo diferente, usando prova social do segmento US.",
+          conteudo: [
+            "Sinalização explícita de que você está mudando o ângulo.",
+            "Um case real do mesmo segmento, com o salto de antes para depois e o prazo.",
+            "A conexão direta com o motivo de querer falar com ela.",
+          ],
+          estrutura:
+            "Anuncia o novo ângulo. Entrega o case com número e prazo. Amarra ao interesse dela.",
+          personalizacao:
+            "O case tem que ser do segmento dela e verdadeiro, com prazo e resultado reais.",
+          extensaoTom: "3 a 4 frases, seguro.",
+          evite: ["Repetir o texto dos toques anteriores.", "Insistir sem novidade."],
+        },
+      },
+      {
+        id: "T3-3-3",
+        day: "D+7",
+        channel: "EMAIL 1:1",
+        priority: "Baixa",
+        action:
+          "Break-up leve, porta aberta. Ao concluir sem resposta, o roteador devolve a conta à banda de origem ou à dormência.",
+        brief: {
+          tipo: "brief",
+          assunto: "Deve sinalizar encerramento de ciclo sem drama.",
+          objetivo:
+            "Encerrar a sequência preservando a relação. Sem resposta, a conta volta para a banda anterior ou entra em dormência via roteador.",
+          conteudo: [
+            "Reconhecimento de que talvez não seja o momento.",
+            "Pausa explícita, sem ressentimento.",
+            "Convite para ela retomar quando a dor voltar a pesar.",
+          ],
+          estrutura: "Valida o timing. Comunica a pausa. Deixa a ponte para o futuro.",
+          personalizacao: "Tom coerente com o histórico real da conversa.",
+          extensaoTom: "Curto, 3 frases, elegante, em inglês nativo.",
+          evite: ["Culpa, ironia ou última chance.", "Urgência artificial ou desconto."],
+        },
+      },
+      {
+        id: "T3-3-4",
+        day: "auto",
+        channel: "automação",
+        action:
+          "Ramificação: se responde ou marca, pula o resto e preenche Resultado da reunião ABM. Aderência-oportunidade real aciona a promoção para Tier 1.",
+        branch:
+          "Respondeu ou marcou → preencher 'Resultado da reunião ABM' → se Aderência, MOV-PROMO-T3.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- MOV Dormência T3
+  {
+    id: "MOV-DORM-T3",
+    name: "[ABM][MOV] Dormência Tier 3",
+    tier: "Movimento",
+    trigger:
+      "Conta Tier 3 sem avanço após o corte de permanência (referência prática: 90 dias com rechecagem de banda). Prazo exato sujeito a decisão final.",
+    owner: "Company owner (automação)",
+    cancelWhen: "Nova subida relevante de Score de Abordagem reativa via roteador",
+    summary:
+      "Retira da esteira ativa as contas Tier 3 sem avanço, reduzindo ruído operacional e preparando possível reciclagem futura. Antes de concluir a dormência, recheca se a conta ainda permanece na mesma banda/faixa.",
+    tasks: [
+      {
+        id: "MOV-DORM-T3-1",
+        day: "90d",
+        channel: "automação",
+        action:
+          "Rechecagem de permanência: confirmar banda/faixa e elegibilidade antes de dormir a conta. Referência prática de espera segura: 90 dias. Prazo (corridos x úteis) sujeito a decisão final.",
+        branch: "Rechecar banda antes de concluir. Ver bloco de pendências.",
+        script:
+          "Dormência T3: a conta ficou sem evoluir pelo período de espera. Rechecar se segue na mesma banda. Se sim, Status ABM = dormente e a conta sai das esteiras ativas do Tier 3.",
+      },
+      {
+        id: "MOV-DORM-T3-2",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Marcar Status ABM = dormente, desinscrever das esteiras ativas do Tier 3 e criar tarefa de revisão de reciclagem futura por decisão humana.",
+        branch: "Confirmada a dormência → sai das esteiras ativas → revisão futura.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------- MOV Promoção T3→T1
+  {
+    id: "MOV-PROMO-T3",
+    name: "[ABM][MOV] Promoção T3→T1",
+    tier: "Movimento",
+    trigger:
+      "Resultado da reunião ABM = Aderência-oportunidade real numa conta Tier 3",
+    owner: "Company owner + RevOps",
+    lifecycleEnd: "Opportunity",
+    cancelWhen: "Reinscrição desligada",
+    summary:
+      "A reunião do Tier 3 teve aderência e oportunidade real. Promove a conta para Tier 1 e cria o deal no Pipeline Pibernat. A promoção exige contato: onde não houver, copiar ou reaproveitar os contatos já associados à empresa.",
+    tasks: [
+      {
+        id: "MOV-PROMO-T3-1",
+        day: "D0",
+        channel: "TAREFA",
+        priority: "Alta",
+        action:
+          "Garantir contato associado à empresa. Se não houver, copiar ou reaproveitar os contatos já associados antes de criar o deal. A promoção para Tier 1 exige contato.",
+        script:
+          "Pré-requisito de promoção: pelo menos um contato associado à empresa. Sem contato, copiar/reaproveitar os contatos existentes da empresa. Só então prosseguir.",
+      },
+      {
+        id: "MOV-PROMO-T3-2",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Ideal Customer Profile Tier = Tier 1. Lifecycle = Opportunity. Criar deal no Pipeline Pibernat no estágio acordado, associado à empresa e ao contato.",
+        script:
+          "Estágio inicial do deal no Pibernat: usar o estágio acordado. O estágio inicial exato é ponto de definição final (ver pendências). Não travar sem confirmação.",
+      },
+      {
+        id: "MOV-PROMO-T3-3",
+        day: "D0",
+        channel: "TAREFA",
+        priority: "Alta",
+        action:
+          "Criar task de handoff para o Company owner responsável. Registrar contexto da reunião, comitê faltante e próximo passo de forma rastreável.",
+        script:
+          "Handoff T3→T1: contexto da reunião [dor confirmada], [pessoas presentes], [próximo passo]. Comitê faltante: [papéis]. Registrar a transição no framework do playbook.",
+      },
+      {
+        id: "MOV-PROMO-T3-4",
+        day: "D0",
+        channel: "automação",
+        action:
+          "Desinscrever das esteiras do Tier 3, manter a comunicação de marketing. A conta passa a ser lida pelo Score de Prioridade do Tier 1.",
+      },
+    ],
+  },
 ];
 
 export const workflowsById: Record<string, Workflow> = Object.fromEntries(

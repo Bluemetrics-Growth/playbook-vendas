@@ -72,6 +72,50 @@ export const ifThenRules: IfThenRule[] = [
     condition: "Deal do Tier 1 fecha",
     action: "A conta sai do Tier 1, sem rebaixamento para Tier 2.",
   },
+  {
+    id: "r-t3-roteador",
+    tier: "Tier 3",
+    condition: "ICP = Tier 3 e o Score de Abordagem cruza um limiar de banda",
+    action:
+      "O roteador canônico do Tier 3 lê a banda atual e faz a inscrição atômica na esteira certa (T3-0/1/2/3). Uma banda, uma esteira.",
+  },
+  {
+    id: "r-t3-desinscricao",
+    tier: "Tier 3",
+    condition: "A conta Tier 3 muda de banda",
+    action:
+      "Auto-desinscrição: sai da esteira anterior antes de entrar na nova. Nunca duas esteiras ativas na mesma conta.",
+  },
+  {
+    id: "r-t3-75",
+    tier: "Tier 3",
+    condition: "Tier 3 cruza 75 (usou o instrumento ou respondeu)",
+    action:
+      "Lifecycle = SQL, pedido de reunião (T3-3) com SLA de 24h. O gatilho de reunião segue sob sinal.",
+    sla: "24h",
+    isGate: true,
+  },
+  {
+    id: "r-t3-promo",
+    tier: "Movimento",
+    condition: "Reunião Tier 3 = Aderência-oportunidade real",
+    action:
+      "Promove a Tier 1: garante contato associado (copia se faltar), cria o deal no Pibernat, cria task de handoff, Lifecycle = Opportunity.",
+  },
+  {
+    id: "r-t3-dormencia",
+    tier: "Tier 3",
+    condition: "Conta Tier 3 sem avanço após o corte de permanência",
+    action:
+      "Recheca a banda e, se confirmada, marca dormente e desinscreve das esteiras ativas. Prazo exato (corridos x úteis) sujeito a decisão final.",
+  },
+  {
+    id: "r-t3-reentrada",
+    tier: "Tier 3",
+    condition: "Conta Tier 3 reentra (volta de dormência ou reciclagem)",
+    action:
+      "Recomputar ou resetar o Score de Abordagem antes de rotear. Score residual não pode recolocar a conta numa banda aleatória.",
+  },
 ];
 
 export const orchestrationSequence: OrchestrationStage[] = [
@@ -83,3 +127,6 @@ export const orchestrationSequence: OrchestrationStage[] = [
 
 export const slaNote =
   "SLA: sinal quente exige ação em até 24h. As tarefas chegam como notificação para o executivo dono da empresa no HubSpot. Registrar toda atividade. No Tier 1 o registro é o que segura o score.";
+
+export const tier3RouterNote =
+  "O Tier 3 segue o padrão arquitetural preferido: um roteador canônico por tier, inscrição por cruzamento de limiar (não por um genérico score mudou), decisão atômica de banda e desinscrição automática da esteira anterior ao mudar de banda. Isso evita contas em duas esteiras ao mesmo tempo, conflito de cadências, reentrada por score residual e ativação por oscilação marginal.";

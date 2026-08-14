@@ -7,7 +7,7 @@ import { workflows } from "@/content/abm/workflows";
 import type { WorkflowGroup } from "@/content/types";
 import { BandBadge } from "@/components/ui/BandBadge";
 
-const tiers: (WorkflowGroup | "Todos")[] = ["Todos", "Tier 2", "Movimento", "Tier 1"];
+const tiers: (WorkflowGroup | "Todos")[] = ["Todos", "Tier 2", "Movimento", "Tier 1", "Tier 3"];
 
 export function EsteirasIndex() {
   const [tier, setTier] = useState<WorkflowGroup | "Todos">("Todos");
